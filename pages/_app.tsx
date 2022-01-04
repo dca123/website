@@ -5,6 +5,7 @@ import '@fontsource/montserrat/600.css';
 import '@fontsource/montserrat/400.css';
 import '@fontsource/lato/400.css';
 import '@fontsource/lato/700.css';
+import { GlobalProps } from '@emotion/react';
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -22,7 +23,7 @@ const theme = extendTheme({
     body: 'Lato'
   },
   styles: {
-    global: (props) => ({
+    global: (props: GlobalProps) => ({
       body: {
         backgroundColor: 'gray.50',
       }
