@@ -1,5 +1,6 @@
 {
   "conventionalCommits.scopes": [
-    "_app"
+    "_app",
+    " index"
   ]
 }
