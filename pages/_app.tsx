@@ -67,7 +67,7 @@ export const theme = extendTheme({
     }
   },
   styles: {
-    global: (props) => ({
+    global: (props: GlobalStylesProps) => ({
       body: {
         backgroundColor: props.colorMode == 'dark' ? 'gray.900' : 'gray.50',
       }
@@ -80,4 +80,8 @@ interface GradientButtonProps {
   fromcolor: string
   tocolor: string
   theme: Dict<any>
+}
+
+interface GlobalStylesProps {
+  colorMode: string
 }
