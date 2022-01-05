@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { ChakraProvider, extendTheme, FadeProps } from '@chakra-ui/react';
+import { ChakraProvider, color, extendTheme, FadeProps, StyleProps, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react';
 import '@fontsource/montserrat/800.css';
 import '@fontsource/montserrat/700.css';
 import '@fontsource/montserrat/600.css';
@@ -23,7 +23,11 @@ function App({ Component, pageProps }: AppProps) {
 
 export default App
 
-const theme = extendTheme({
+export const theme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+  },
   fonts: {
     heading: 'Montserrat',
     body: 'Lato'
@@ -63,13 +67,14 @@ const theme = extendTheme({
     }
   },
   styles: {
-    global: () => ({
+    global: (props) => ({
       body: {
-        backgroundColor: 'gray.50',
+        backgroundColor: props.colorMode == 'dark' ? 'gray.900' : 'gray.50',
       }
     })
   }
-})
+},
+)
 
 interface GradientButtonProps {
   fromcolor: string
