@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </Button>
 
       </HStack >
-      <Box height="24"></Box>
+      <Box height={["14", "24"]}></Box>
       {children}
     </Container >
   );

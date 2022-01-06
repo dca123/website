@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Box, Container, Divider, Heading, HStack, Image, Tag, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Divider, Flex, Heading, HStack, Image, Tag, Text, VStack } from "@chakra-ui/react";
 import { SunIcon } from "@chakra-ui/icons";
 import Layout from "../../components/layout";
 import { Project } from "..";
@@ -12,7 +12,7 @@ interface ProjectPage extends Project {
 
 const DotaPage: NextPage<ProjectPage> = ({ title, date, github, headerImageUrl, skills }: ProjectPage) => {
   const skillStack = skills.map((skill) => {
-    return <Tag size="lg" colorScheme="orange" fontWeight="700" key="tag">{skill}</Tag>
+    return <Tag size="lg" colorScheme="orange" fontWeight="700" key="tag" mx="1" my="1">{skill}</Tag>
   });
 
   return (
@@ -30,9 +30,9 @@ const DotaPage: NextPage<ProjectPage> = ({ title, date, github, headerImageUrl, 
         <Box overflow="clip" borderRadius="lg" maxH="xs">
           <Image src={headerImageUrl} alt="image" objectFit="cover" />
         </Box>
-        <HStack pt={2}>
+        <Flex pt={2} flexWrap="wrap">
           {skillStack}
-        </HStack>
+        </Flex>
         <Box py="6" w="full">
           <Divider />
         </Box>

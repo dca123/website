@@ -43,9 +43,12 @@ const Home: NextPage<Props> = ({ subText, githubUrl, linkedInUrl, emailUrl, resu
             {"I'm"}
           </Heading>
           <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip='text'>
-            Devinda Senanayake
+            Devinda
           </Heading>
         </HStack>
+        <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip='text'>
+          Senanayake
+        </Heading>
         <Box bgColor={subTextBackground} py="6" px="4" borderRadius="lg">
           <Text fontSize={18}>{subText}</Text>
         </Box>
@@ -60,7 +63,7 @@ const Home: NextPage<Props> = ({ subText, githubUrl, linkedInUrl, emailUrl, resu
           <Divider />
         </Box>
         <Heading pb="4" size="lg" fontWeight="400">{"Stuff I've Coded"}</Heading>
-        <SimpleGrid columns={3} spacing={6}>
+        <SimpleGrid columns={[1, 3]} spacing={6}>
           {cards}
         </SimpleGrid>
         <Box alignSelf="center" pt="4">
