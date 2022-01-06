@@ -20,10 +20,10 @@ const DotaPage: NextPage = () => {
           <Image src="/images/image.jpg" alt="image" objectFit="cover" />
         </Box>
         <HStack pt={2}>
-          <Tag size="lg" colorScheme="orange" color="orange.900" backgroundColor="orange.200" fontWeight="700">Node.js</Tag>
-          <Tag size="lg" colorScheme="orange" color="orange.900" backgroundColor="orange.200" fontWeight="700">Node.js</Tag>
-          <Tag size="lg" colorScheme="orange" color="orange.900" backgroundColor="orange.200" fontWeight="700">Node.js</Tag>
-          <Tag size="lg" colorScheme="orange" color="orange.900" backgroundColor="orange.200" fontWeight="700">Node.js</Tag>
+          <Tag size="lg" colorScheme="orange" fontWeight="700">Node.js</Tag>
+          <Tag size="lg" colorScheme="orange" fontWeight="700">Node.js</Tag>
+          <Tag size="lg" colorScheme="orange" fontWeight="700">Node.js</Tag>
+          <Tag size="lg" colorScheme="orange" fontWeight="700">Node.js</Tag>
         </HStack>
         <Box py="4" w="full">
           <Divider />

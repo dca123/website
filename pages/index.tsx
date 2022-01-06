@@ -5,8 +5,9 @@ import { SunIcon } from '@chakra-ui/icons';
 import Layout from '../components/layout';
 
 const Home: NextPage = () => {
-  const bg = useColorModeValue('linear(to-r, #ED8936, rgba(237, 75, 53, 0.6))', 'linear(to-r, #ED8936, rgba(237, 80, 53, 0.6))')
-  const bg2 = useColorModeValue("gray.100", "gray.800");
+  const bg = useColorModeValue('linear(to-r, hsla(27, 84%, 57%, 1), hsla(7, 84%, 57%, 0.7))',
+    'linear(to-r, hsla(27, 84%, 57%, 1), hsla(7, 84%, 57%, 0.7))');
+  const bg2 = useColorModeValue("gray.100", "gray.700");
   return (
     <Layout>
       <VStack align="start">

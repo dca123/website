@@ -33,6 +33,30 @@ export const theme = extendTheme({
     body: 'Lato'
   },
   components: {
+    Card: {
+      baseStye: ({ colorMode }: { colorMode: string }) => ({
+        borderRadius: "xl",
+        overflow: "hidden",
+        bgGradient: "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))"
+      })
+    },
+    Text: {
+      variants: {
+        card: ({ colorMode }: { colorMode: string }) => ({
+          fontWeight: "400",
+          color: colorMode == "dark" ? "gray.300" : "gray.600",
+          fontSize: "sm"
+        }),
+      }
+    },
+    Heading: {
+      variants: {
+        card: ({ colorMode }: { colorMode: string }) => ({
+          fontWeight: "700",
+          color: colorMode == "dark" ? "gray.200" : "gray.800",
+        }),
+      }
+    },
     Button: {
       variants: {
         gradient: (props: GradientButtonProps) => {
