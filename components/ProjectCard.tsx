@@ -16,7 +16,7 @@ export default function ProjectCard({ title, imageUrl, skills, slug }: Project) 
         <Image src={imageUrl} alt="image" objectFit="cover" />
         <Flex alignItems="flex-start" justify="space-between" direction="column" px={7} bgGradient={bg}>
           <Box py={5}>
-            <Heading size="lg" variant="card">{title}</Heading>
+            <Heading fontSize="3xl" variant="card">{title}</Heading>
             <Text variant="card" pt={1}>A custom matchmaker for new players in dota 2A custom matchmaker for new players in dota 2</Text>
           </Box>
           <Box pb={8}>

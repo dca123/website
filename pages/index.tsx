@@ -63,7 +63,7 @@ const Home: NextPage<Props> = ({ subText, githubUrl, linkedInUrl, emailUrl, resu
           <Divider />
         </Box>
         <Heading pb="4" size="lg" fontWeight="400">{"Stuff I've Coded"}</Heading>
-        <SimpleGrid columns={[1, 3]} spacing={6}>
+        <SimpleGrid columns={[1, 2, 3]} spacing={6}>
           {cards}
         </SimpleGrid>
         <Box alignSelf="center" pt="4">
