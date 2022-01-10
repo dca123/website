@@ -3,5 +3,6 @@
     "_app",
     " index",
     "projects"
-  ]
+  ],
+  "editor.formatOnSave": true
 }
