@@ -268,18 +268,7 @@ export const getStaticProps: GetStaticProps<ProjectPage, Props> = async (
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [
-      {
-        params: {
-          slug: "dota-2",
-        },
-      },
-      {
-        params: {
-          slug: "pre-rendering",
-        },
-      },
-    ],
+    paths: [],
     fallback: "blocking",
   };
 };
