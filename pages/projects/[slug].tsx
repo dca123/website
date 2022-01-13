@@ -1,19 +1,12 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync, writeFileSync } from "fs";
 import { AcceptedTypes } from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
+import Image from "next/image";
 export interface ExternalImageInterface {
   url: string;
   caption: string;
@@ -60,8 +53,15 @@ const DotaPage: NextPage<ProjectPagePropsInterface> = ({
             </Heading>
           </VStack>
         </HStack>
-        <Box overflow="clip" borderRadius="lg" maxH="xs">
-          <Image src={projectImage} alt="image" objectFit="cover" />
+        <Box overflow="clip" borderRadius="lg" w="full" h="full">
+          <Image
+            src={projectImage}
+            alt="image"
+            layout="responsive"
+            objectFit="cover"
+            width="100"
+            height="80"
+          />
         </Box>
         <Flex pt={2} flexWrap="wrap">
           {skillStack}

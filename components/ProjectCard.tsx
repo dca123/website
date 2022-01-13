@@ -6,11 +6,11 @@ import {
   Text,
   Heading,
   Flex,
-  Image,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { ProjectCardPropsInterface } from "../pages";
+import Image from "next/image";
 
 export default function ProjectCard({
   title,
@@ -34,7 +34,16 @@ export default function ProjectCard({
     <Box borderRadius="xl" overflow="hidden">
       <Link href={"/projects/" + slug} passHref>
         <Flex direction="column" h="full">
-          <Image src={imageUrl} alt="image" objectFit="cover" />
+          <Box>
+            <Image
+              src={imageUrl}
+              alt="image"
+              objectFit="cover"
+              layout="responsive"
+              width="120"
+              height="75"
+            />
+          </Box>
           <Flex
             alignItems="flex-start"
             justify="space-between"

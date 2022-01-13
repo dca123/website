@@ -38,7 +38,7 @@ export const extractProjectProperties = (
   slug: property.slug.rich_text?.[0].plain_text ?? "",
   projectImage: `https://picsum.photos/id/${Math.floor(
     Math.random() * (500 - 300) + 500
-  )}/1024/768`,
+  )}/1280/720`,
   description: property.description.rich_text?.[0].plain_text ?? "",
   skills:
     property.skills.multi_select?.map((skill) => skill.name).slice(0, 3) ?? [],

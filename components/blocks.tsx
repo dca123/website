@@ -3,12 +3,11 @@ import {
   OrderedList,
   ListItem,
   Box,
-  Img,
   Text,
   VStack,
   UnorderedList,
 } from "@chakra-ui/react";
-
+import Image from "next/image";
 import {
   BlockInterface,
   ExternalImageInterface,
@@ -73,11 +72,14 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
       case "image":
         return (
           <VStack py="4" alignSelf="center" align="flex-start" key={block.id}>
-            <Box overflow="clip" borderRadius="lg" maxW="2xl">
-              <Img
+            <Box overflow="clip" borderRadius="lg" w={["xs", "lg", "2xl"]}>
+              <Image
                 src={(block.data as ExternalImageInterface).url}
                 alt="image"
-                objectFit="scale-down"
+                layout="responsive"
+                objectFit="cover"
+                width="100"
+                height="100"
               />
             </Box>
             <Text variant="caption" pl="2">
