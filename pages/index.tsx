@@ -13,8 +13,6 @@ import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
 import Layout from "../components/layout";
 import { ExternalLink } from "../components/ExternalLink";
-import { getProjects } from "../lib/notion";
-import { BlockInterface } from "./projects/[slug]";
 
 const Home: NextPage<Props> = ({
   subText,
@@ -90,8 +88,27 @@ const Home: NextPage<Props> = ({
 
 export default Home;
 
+import { getProjects } from "../lib/notion";
+import { BlockInterface } from "./projects/[slug]";
+import { readFileSync } from "fs";
+import { Client } from "@notionhq/client/build/src";
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export const getStaticProps: GetStaticProps = async () => {
-  const projects: ProjectCardPropsInterface[] = await getProjects();
+  let response;
+  if (process.env.NODE_ENV === "production") {
+    const database_id = "4f1fd603748b44d58615d782979d7a1e";
+    response = await notion.databases.query({
+      database_id,
+    });
+    // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
+  } else {
+    const jsonString = readFileSync("./test_data/database.json", {
+      encoding: "utf8",
+    });
+    response = JSON.parse(jsonString);
+  }
+
+  const projects: ProjectCardPropsInterface[] = await getProjects(response);
 
   const props: Props = {
     subText:

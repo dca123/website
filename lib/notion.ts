@@ -1,6 +1,5 @@
 // const notion = new Client({ auth: process.env.NOTION_API_KEY });
-import { ProjectProperties, Properties } from "../types/projectReponse";
-import { readFileSync } from "fs";
+import { ProjectPropertiesResponse, Properties } from "../types/projectReponse";
 import { ProjectCardPropsInterface, ProjectPageInterface } from "../pages";
 import { ProjectPropertiesResultsEntity } from "../types/projectReponse";
 import {
@@ -15,19 +14,7 @@ import {
   TextTypes,
 } from "../types/pageResponse";
 
-export const getProjects = async () => {
-  // const database_id = "4f1fd603748b44d58615d782979d7a1e";
-  // const response: QueryDatabaseResponse = await notion.databases.query({
-  //   database_id,
-  // });
-
-  // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
-
-  const jsonString = readFileSync("./test_data/database.json", {
-    encoding: "utf8",
-  });
-
-  const response: ProjectProperties = JSON.parse(jsonString);
+export const getProjects = async (response: ProjectPropertiesResponse) => {
   const projects: ProjectCardPropsInterface[] =
     response.results
       ?.map((result: ProjectPropertiesResultsEntity) => {
@@ -37,6 +24,11 @@ export const getProjects = async () => {
       .slice(0, 6) ?? [];
 
   return projects;
+};
+
+export const getProjectSlugs = async (response: ProjectPropertiesResponse) => {
+  const projects = await getProjects(response);
+  return projects.map((project) => ({ params: { slug: project.slug } }));
 };
 
 export const extractProjectProperties = (

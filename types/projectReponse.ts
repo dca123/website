@@ -1,4 +1,4 @@
-export interface ProjectProperties {
+export interface ProjectPropertiesResponse {
   object: string;
   results?: ProjectPropertiesResultsEntity[] | null;
   next_cursor?: null;

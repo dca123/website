@@ -79,7 +79,11 @@ const DotaPage: NextPage<ProjectPagePropsInterface> = ({
 export default DotaPage;
 
 import { Client } from "@notionhq/client";
-import { extractProjectProperties, responseToBlocks } from "../../lib/notion";
+import {
+  extractProjectProperties,
+  getProjectSlugs,
+  responseToBlocks,
+} from "../../lib/notion";
 import { ProjectPagePropsInterface } from "..";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -102,13 +106,13 @@ const getProjectIdFromSlug = async (slug: string) => {
   return response.results[0].id;
 };
 
-interface Props extends ParsedUrlQuery {
+interface ProjectPageUrlProps extends ParsedUrlQuery {
   slug: string;
 }
 
 export const getStaticProps: GetStaticProps<
   ProjectPagePropsInterface,
-  Props
+  ProjectPageUrlProps
 > = async (context) => {
   if (!context.params) {
     throw new Error("No params available");
@@ -161,9 +165,25 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths<ProjectPageUrlProps> = async () => {
+  let response;
+  if (process.env.NODE_ENV === "production") {
+    const database_id = "4f1fd603748b44d58615d782979d7a1e";
+    response = await notion.databases.query({
+      database_id,
+    });
+    // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
+  } else {
+    const jsonString = readFileSync("./test_data/database.json", {
+      encoding: "utf8",
+    });
+    response = JSON.parse(jsonString);
+  }
+
+  const paths = await getProjectSlugs(response);
+
   return {
-    paths: [],
+    paths,
     fallback: "blocking",
   };
 };
