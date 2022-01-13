@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Heading>
           </a>
         </Link>
-        <Link href="/projects/dota-2">
+        <Link href="/">
           <a>
             <Heading fontWeight="500" fontSize="md" px="4">
               Projects
