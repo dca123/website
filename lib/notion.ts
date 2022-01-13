@@ -107,11 +107,11 @@ export const groupListBlocks = (blocks: BlockInterface[]): BlockInterface[] => {
   return ans;
 };
 
-export const responseToBlocks = ({
-  response,
-}: {
-  response: ProjectContentResponse;
-}): BlockInterface[] => {
+export const responseToBlocks = (
+  response: ProjectContentResponse
+): BlockInterface[] => {
+  console.log(response);
+
   let blockContent =
     response.results?.map((result, index) => {
       return {

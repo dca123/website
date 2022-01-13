@@ -11,10 +11,7 @@ import {
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync } from "fs";
-import {
-  AcceptedTypes,
-  ProjectContentResponse,
-} from "../../types/pageResponse";
+import { AcceptedTypes } from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
 export interface ProjectPageProps {
