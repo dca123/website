@@ -90,7 +90,7 @@ export default Home;
 
 import { getProjects } from "../lib/notion";
 import { BlockInterface } from "./projects/[slug]";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export const getStaticProps: GetStaticProps = async () => {
@@ -100,7 +100,7 @@ export const getStaticProps: GetStaticProps = async () => {
     response = await notion.databases.query({
       database_id,
     });
-    // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
+    // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
   } else {
     const jsonString = readFileSync("./test_data/database.json", {
       encoding: "utf8",

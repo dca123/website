@@ -131,10 +131,14 @@ export const getStaticProps: GetStaticProps<
     pageContentResponse = await notion.blocks.children.list({
       block_id: projectId,
     });
-    writeFileSync(
-      `./test_data/pagesProperty/${slug}.json`,
-      JSON.stringify(pagePropertiesResponse)
-    );
+    // writeFileSync(
+    //   `./test_data/pagesProperty/${slug}.json`,
+    //   JSON.stringify(pagePropertiesResponse)
+    // );
+    // writeFileSync(
+    //   `./test_data/pages/${slug}.json`,
+    //   JSON.stringify(pageContentResponse)
+    // );
   } else {
     const pageContentJsonString = readFileSync(
       `./test_data/pages/${slug}.json`,
@@ -172,7 +176,7 @@ export const getStaticPaths: GetStaticPaths<ProjectPageUrlProps> = async () => {
     response = await notion.databases.query({
       database_id,
     });
-    // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
+    // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
   } else {
     const jsonString = readFileSync("./test_data/database.json", {
       encoding: "utf8",
