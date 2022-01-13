@@ -14,6 +14,7 @@ import ProjectCard from "../components/ProjectCard";
 import Layout from "../components/layout";
 import { ExternalLink } from "../components/ExternalLink";
 import { getProjects } from "../lib/notion";
+import { BlockInterface } from "./projects/[slug]";
 
 const Home: NextPage<Props> = ({
   subText,
@@ -33,7 +34,7 @@ const Home: NextPage<Props> = ({
       <ProjectCard
         key={project.slug}
         title={project.title}
-        imageUrl={project.imageUrl}
+        projectImage={project.projectImage}
         skills={project.skills}
         description={project.description}
         slug={project.slug}
@@ -90,7 +91,7 @@ const Home: NextPage<Props> = ({
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const projects: Project[] = await getProjects();
+  const projects: ProjectCardPropsInterface[] = await getProjects();
 
   const props: Props = {
     subText:
@@ -107,10 +108,18 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export interface Project {
+export interface ProjectPageInterface extends ProjectCardPropsInterface {
+  date: string;
+  githubUrl: string;
+}
+
+export interface ProjectPagePropsInterface extends ProjectPageInterface {
+  blocks: BlockInterface[];
+}
+export interface ProjectCardPropsInterface {
   title: string;
   slug: string;
-  imageUrl: string;
+  projectImage: string;
   description: string;
   skills: string[];
 }
@@ -121,5 +130,5 @@ interface Props {
   emailUrl: string;
   linkedInUrl: string;
   githubUrl: string;
-  recentProjects: Project[];
+  recentProjects: ProjectCardPropsInterface[];
 }

@@ -1,7 +1,7 @@
 // const notion = new Client({ auth: process.env.NOTION_API_KEY });
 import { ProjectProperties, Properties } from "../types/projectReponse";
 import { readFileSync } from "fs";
-import { Project } from "../pages";
+import { ProjectCardPropsInterface, ProjectPageInterface } from "../pages";
 import { ProjectPropertiesResultsEntity } from "../types/projectReponse";
 import {
   BlockInterface,
@@ -28,7 +28,7 @@ export const getProjects = async () => {
   });
 
   const response: ProjectProperties = JSON.parse(jsonString);
-  const projects: Project[] =
+  const projects: ProjectCardPropsInterface[] =
     response.results
       ?.map((result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
@@ -39,15 +39,19 @@ export const getProjects = async () => {
   return projects;
 };
 
-export const extractProjectProperties = (property: Properties): Project => ({
+export const extractProjectProperties = (
+  property: Properties
+): ProjectPageInterface => ({
   title: property.name.title?.[0].plain_text ?? "",
   slug: property.slug.rich_text?.[0].plain_text ?? "",
-  imageUrl: `https://picsum.photos/id/${Math.floor(
+  projectImage: `https://picsum.photos/id/${Math.floor(
     Math.random() * (500 - 300) + 500
-  )}/600/300`,
+  )}/1024/768`,
   description: property.description.rich_text?.[0].plain_text ?? "",
   skills:
     property.skills.multi_select?.map((skill) => skill.name).slice(0, 3) ?? [],
+  date: property.date.date.start,
+  githubUrl: property.github.rich_text?.[0].plain_text ?? "",
 });
 
 const extractTextFromBlock = (
@@ -110,8 +114,6 @@ export const groupListBlocks = (blocks: BlockInterface[]): BlockInterface[] => {
 export const responseToBlocks = (
   response: ProjectContentResponse
 ): BlockInterface[] => {
-  console.log(response);
-
   let blockContent =
     response.results?.map((result, index) => {
       return {

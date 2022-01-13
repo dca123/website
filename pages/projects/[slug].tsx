@@ -10,19 +10,10 @@ import {
 } from "@chakra-ui/react";
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { AcceptedTypes } from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
-export interface ProjectPageProps {
-  title: string;
-  date: string;
-  github: string;
-  headerImageUrl: string;
-  skills: string[];
-  blocks: BlockInterface[];
-}
-
 export interface ExternalImageInterface {
   url: string;
   caption: string;
@@ -37,14 +28,14 @@ export interface BlockInterface<T = BlockData> {
   data: T;
 }
 
-const DotaPage: NextPage<ProjectPageProps> = ({
+const DotaPage: NextPage<ProjectPagePropsInterface> = ({
   title,
   date,
-  github,
-  headerImageUrl,
+  githubUrl,
+  projectImage,
   skills,
   blocks,
-}: ProjectPageProps) => {
+}: ProjectPagePropsInterface) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
 
@@ -65,12 +56,12 @@ const DotaPage: NextPage<ProjectPageProps> = ({
               {date}
             </Heading>
             <Heading fontWeight="400" fontSize="sm">
-              {github}
+              {githubUrl}
             </Heading>
           </VStack>
         </HStack>
         <Box overflow="clip" borderRadius="lg" maxH="xs">
-          <Image src={headerImageUrl} alt="image" objectFit="cover" />
+          <Image src={projectImage} alt="image" objectFit="cover" />
         </Box>
         <Flex pt={2} flexWrap="wrap">
           {skillStack}
@@ -88,7 +79,8 @@ const DotaPage: NextPage<ProjectPageProps> = ({
 export default DotaPage;
 
 import { Client } from "@notionhq/client";
-import { responseToBlocks } from "../../lib/notion";
+import { extractProjectProperties, responseToBlocks } from "../../lib/notion";
+import { ProjectPagePropsInterface } from "..";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {
@@ -114,36 +106,57 @@ interface Props extends ParsedUrlQuery {
   slug: string;
 }
 
-export const getStaticProps: GetStaticProps<ProjectPageProps, Props> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps<
+  ProjectPagePropsInterface,
+  Props
+> = async (context) => {
   if (!context.params) {
     throw new Error("No params available");
   }
   const { slug } = context.params;
 
-  let response;
+  let pageContentResponse;
+  let pagePropertiesResponse;
+
   if (process.env.NODE_ENV === "production") {
     const projectId = await getProjectIdFromSlug(slug);
-    response = await notion.blocks.children.list({
+    pagePropertiesResponse = await notion.pages.retrieve({
+      page_id: projectId,
+    });
+
+    pageContentResponse = await notion.blocks.children.list({
       block_id: projectId,
     });
-    // writeFileSync(`./test_data/pages/${slug}.json`, JSON.stringify(response));
+    writeFileSync(
+      `./test_data/pagesProperty/${slug}.json`,
+      JSON.stringify(pagePropertiesResponse)
+    );
   } else {
-    const jsonString = readFileSync(`./test_data/pages/${slug}.json`, {
-      encoding: "utf8",
-    });
-    response = JSON.parse(jsonString);
+    const pageContentJsonString = readFileSync(
+      `./test_data/pages/${slug}.json`,
+      {
+        encoding: "utf8",
+      }
+    );
+    const pagePropertiesJsonString = readFileSync(
+      `./test_data/pagesProperty/${slug}.json`,
+      {
+        encoding: "utf8",
+      }
+    );
+
+    pageContentResponse = JSON.parse(pageContentJsonString);
+    pagePropertiesResponse = JSON.parse(pagePropertiesJsonString);
   }
+
+  const pageProperties = extractProjectProperties(
+    pagePropertiesResponse.properties
+  );
 
   return {
     props: {
-      title: "Dota 2",
-      date: "January 10th, 2019",
-      github: "github.com/dca123/hitchspots",
-      headerImageUrl: "/images/image.jpg",
-      skills: ["Node.js", "React", "Next.js", "TypeScript", "Chakra UI"],
-      blocks: responseToBlocks(response),
+      ...pageProperties,
+      blocks: responseToBlocks(pageContentResponse),
     },
   };
 };

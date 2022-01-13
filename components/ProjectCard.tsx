@@ -10,15 +10,15 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { Project } from "../pages";
+import { ProjectCardPropsInterface } from "../pages";
 
 export default function ProjectCard({
   title,
-  imageUrl,
+  projectImage: imageUrl,
   skills,
   slug,
   description,
-}: Project) {
+}: ProjectCardPropsInterface) {
   const bg = useColorModeValue(
     "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))",
     "linear(to-t, hsla(214, 32%, 20%, 0.8), hsla(214, 32%, 20%, 0.6))"
