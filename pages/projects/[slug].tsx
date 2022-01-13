@@ -11,37 +11,43 @@ import {
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync } from "fs";
-import { ProjectContentResponse } from "../../types/pageResponse";
+import {
+  AcceptedTypes,
+  ProjectContentResponse,
+} from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
-export interface ProjectPage {
+export interface ProjectPageProps {
   title: string;
   date: string;
   github: string;
   headerImageUrl: string;
   skills: string[];
-  blocks: Block[];
+  blocks: BlockInterface[];
 }
 
-export interface ExternalImage {
+export interface ExternalImageInterface {
   url: string;
   caption: string;
 }
 
-export interface Block {
+type Lists = string[];
+
+export type BlockData = string | Lists | ExternalImageInterface;
+export interface BlockInterface<T = BlockData> {
   id: string;
-  type: string;
-  data: string | string[] | ExternalImage;
+  type: AcceptedTypes;
+  data: T;
 }
 
-const DotaPage: NextPage<ProjectPage> = ({
+const DotaPage: NextPage<ProjectPageProps> = ({
   title,
   date,
   github,
   headerImageUrl,
   skills,
   blocks,
-}: ProjectPage) => {
+}: ProjectPageProps) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
 
@@ -85,11 +91,7 @@ const DotaPage: NextPage<ProjectPage> = ({
 export default DotaPage;
 
 import { Client } from "@notionhq/client";
-import {
-  extractContentFromBlock,
-  extractListsFromBlock,
-} from "../../lib/notion";
-
+import { responseToBlocks } from "../../lib/notion";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {
@@ -115,7 +117,7 @@ interface Props extends ParsedUrlQuery {
   slug: string;
 }
 
-export const getStaticProps: GetStaticProps<ProjectPage, Props> = async (
+export const getStaticProps: GetStaticProps<ProjectPageProps, Props> = async (
   context
 ) => {
   if (!context.params) {
@@ -137,15 +139,6 @@ export const getStaticProps: GetStaticProps<ProjectPage, Props> = async (
     response = JSON.parse(jsonString);
   }
 
-  const blocks: Block[] =
-    (response as ProjectContentResponse).results?.map((result, index) => {
-      return {
-        id: index.toString(),
-        type: result.type,
-        data: extractContentFromBlock(result.type, result),
-      };
-    }) ?? [];
-
   return {
     props: {
       title: "Dota 2",
@@ -153,7 +146,7 @@ export const getStaticProps: GetStaticProps<ProjectPage, Props> = async (
       github: "github.com/dca123/hitchspots",
       headerImageUrl: "/images/image.jpg",
       skills: ["Node.js", "React", "Next.js", "TypeScript", "Chakra UI"],
-      blocks: extractListsFromBlock(blocks),
+      blocks: responseToBlocks(response),
     },
   };
 };

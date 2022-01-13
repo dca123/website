@@ -4,10 +4,14 @@ interface GlobalStylesProps {
   colorMode: string;
 }
 
+interface VariantProps {
+  colorMode: string;
+}
+
 export const theme = extendTheme({
   config: {
     initialColorMode: "light",
-    useSystemColorMode: true,
+    // useSystemColorMode: true,
   },
   fonts: {
     heading: "Montserrat",
@@ -24,10 +28,15 @@ export const theme = extendTheme({
     },
     Text: {
       variants: {
-        card: ({ colorMode }: { colorMode: string }) => ({
+        card: ({ colorMode }: VariantProps) => ({
           fontWeight: "400",
           color: colorMode == "dark" ? "gray.300" : "gray.600",
           fontSize: "sm",
+        }),
+        caption: ({ colorMode }: VariantProps) => ({
+          fontWeight: "300",
+          color: colorMode == "dark" ? "gray.500" : "gray.700",
+          fontSize: "md",
         }),
       },
     },

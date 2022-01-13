@@ -5,12 +5,17 @@ import {
   Box,
   Img,
   Text,
+  VStack,
+  UnorderedList,
 } from "@chakra-ui/react";
 
-import { Block } from "../pages/projects/[slug]";
+import {
+  BlockInterface,
+  ExternalImageInterface,
+} from "../pages/projects/[slug]";
 
-export const renderBlocks = (blocks: Block[]) =>
-  blocks.map((block: Block, index) => {
+export const renderBlocks = (blocks: BlockInterface[]) =>
+  blocks.map((block: BlockInterface, index) => {
     switch (block.type) {
       case "paragraph":
         return (
@@ -53,13 +58,32 @@ export const renderBlocks = (blocks: Block[]) =>
             ))}
           </OrderedList>
         );
+      case "bulleted_list_item":
+        return (
+          <UnorderedList pl={10} key={index}>
+            {(block.data as string[]).map((item: string, index: number) => (
+              <ListItem key={index} py={0.5}>
+                <Text fontSize="lg" fontWeight="400">
+                  {item}
+                </Text>
+              </ListItem>
+            ))}
+          </UnorderedList>
+        );
       case "image":
         return (
-          <Box py="4" alignSelf="center">
-            <Box overflow="clip" borderRadius="lg" maxH="md" maxW="2xl">
-              <Img src={block.data as string} alt="image" objectFit="cover" />
+          <VStack py="4" alignSelf="center" align="flex-start">
+            <Box overflow="clip" borderRadius="lg" maxW="2xl">
+              <Img
+                src={(block.data as ExternalImageInterface).url}
+                alt="image"
+                objectFit="scale-down"
+              />
             </Box>
-          </Box>
+            <Text variant="caption" pl="2">
+              {(block.data as ExternalImageInterface).caption}
+            </Text>
+          </VStack>
         );
       default:
         return <Text key={index}>Block not recognized</Text>;

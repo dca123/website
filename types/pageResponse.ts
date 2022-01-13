@@ -4,6 +4,14 @@ export interface ProjectContentResponse {
   next_cursor?: null;
   has_more: boolean;
 }
+export type TextTypes =
+  | "heading_1"
+  | "paragraph"
+  | "heading_2"
+  | "numbered_list_item"
+  | "bulleted_list_item";
+
+export type AcceptedTypes = TextTypes | "image";
 export interface ProjectContentResultsEntity {
   object: string;
   id: string;
@@ -11,11 +19,12 @@ export interface ProjectContentResultsEntity {
   last_edited_time: string;
   has_children: boolean;
   archived: boolean;
-  type: string;
+  type: AcceptedTypes;
   heading_1?: Heading1OrParagraphOrHeading2OrNumberedListItem | null;
   paragraph?: Paragraph | null;
   heading_2?: Heading1OrParagraphOrHeading2OrNumberedListItem1 | null;
   numbered_list_item?: Heading1OrParagraphOrHeading2OrNumberedListItem2 | null;
+  bulleted_list_item?: Heading1OrParagraphOrHeading2OrNumberedListItem2 | null;
   image?: Image | null;
 }
 export interface Heading1OrParagraphOrHeading2OrNumberedListItem {
