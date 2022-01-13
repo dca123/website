@@ -1,10 +1,10 @@
-export interface ProjectsResponse {
+export interface ProjectProperties {
   object: string;
-  results?: (ResultsEntity)[] | null;
+  results?: ProjectPropertiesResultsEntity[] | null;
   next_cursor?: null;
   has_more: boolean;
 }
-export interface ResultsEntity {
+export interface ProjectPropertiesResultsEntity {
   object: string;
   id: string;
   created_time: string;
@@ -32,7 +32,7 @@ export interface Properties {
 export interface GithubOrDescriptionOrSlug {
   id: string;
   type: string;
-  rich_text?: (RichTextEntityOrTitleEntity)[] | null;
+  rich_text?: RichTextEntityOrTitleEntity[] | null;
 }
 export interface RichTextEntityOrTitleEntity {
   type: string;
@@ -56,7 +56,7 @@ export interface Annotations {
 export interface Skills {
   id: string;
   type: string;
-  multi_select?: (MultiSelectEntity)[] | null;
+  multi_select?: MultiSelectEntity[] | null;
 }
 export interface MultiSelectEntity {
   id: string;
@@ -81,5 +81,5 @@ export interface Date1 {
 export interface Name {
   id: string;
   type: string;
-  title?: (RichTextEntityOrTitleEntity)[] | null;
+  title?: RichTextEntityOrTitleEntity[] | null;
 }

@@ -12,45 +12,8 @@ import {
 import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
 import Layout from "../components/layout";
-
-const ExternalLink = ({
-  href,
-  title,
-  solid: main,
-}: {
-  href: string;
-  title: string;
-  solid?: boolean;
-}) => {
-  let button;
-  if (main) {
-    button = (
-      <Button
-        size="md"
-        fontWeight="700"
-        color="white"
-        bgGradient="linear(to-r, hsla(27, 84%, 55%, 1), hsla(17, 84%, 55%, 0.8))"
-        _hover={{
-          bgGradient:
-            "linear(to-r, hsla(27, 84%, 45%, 1), hsla(17, 84%, 45%, 0.8))",
-        }}
-      >
-        {title}
-      </Button>
-    );
-  } else {
-    button = (
-      <Button size="md" colorScheme="gray" variant="ghost" fontWeight="400">
-        {title}
-      </Button>
-    );
-  }
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {button}
-    </a>
-  );
-};
+import { ExternalLink } from "../components/ExternalLink";
+import { getProjects } from "../lib/notion";
 
 const Home: NextPage<Props> = ({
   subText,
@@ -160,50 +123,3 @@ interface Props {
   githubUrl: string;
   recentProjects: Project[];
 }
-
-import {
-  ProjectsResponse,
-  Properties,
-  ResultsEntity,
-} from "../types/projectReponse";
-import { readFileSync } from "fs";
-
-// const notion = new Client({ auth: process.env.NOTION_API_KEY });
-
-const getProjects = async () => {
-  // const database_id = "4f1fd603748b44d58615d782979d7a1e";
-  // const response: QueryDatabaseResponse = await notion.databases.query({
-  //   database_id,
-  // });
-
-  // fs.writeFile("test_data/database.json", JSON.stringify(response), "utf8");
-
-  const jsonString = readFileSync("./test_data/database.json", {
-    encoding: "utf8",
-  });
-  const response: ProjectsResponse = JSON.parse(jsonString);
-
-  const extractProjectProperties = (property: Properties): Project => {
-    return {
-      title: property.name.title?.[0].plain_text ?? "",
-      slug: property.slug.rich_text?.[0].plain_text ?? "",
-      imageUrl: `https://picsum.photos/id/${Math.floor(
-        Math.random() * (500 - 300) + 500
-      )}/600/300`,
-      description: property.description.rich_text?.[0].plain_text ?? "",
-      skills:
-        property.skills.multi_select?.map((skill) => skill.name).slice(0, 3) ??
-        [],
-    };
-  };
-
-  const projects: Project[] =
-    response.results
-      ?.map((result: ResultsEntity) => {
-        const project = extractProjectProperties(result.properties);
-        return project;
-      })
-      .slice(0, 6) ?? [];
-
-  return projects;
-};

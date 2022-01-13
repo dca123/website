@@ -1,10 +1,10 @@
-export interface PageResponse {
+export interface ProjectContentResponse {
   object: string;
-  results?: (ResultsEntity)[] | null;
+  results?: ProjectContentResultsEntity[] | null;
   next_cursor?: null;
   has_more: boolean;
 }
-export interface ResultsEntity {
+export interface ProjectContentResultsEntity {
   object: string;
   id: string;
   created_time: string;
@@ -19,7 +19,7 @@ export interface ResultsEntity {
   image?: Image | null;
 }
 export interface Heading1OrParagraphOrHeading2OrNumberedListItem {
-  text?: (TextEntityOrCaptionEntity)[] | null;
+  text?: TextEntityOrCaptionEntity[] | null;
 }
 export interface TextEntityOrCaptionEntity {
   type: string;
@@ -51,13 +51,13 @@ export interface TextEntityOrCaptionEntity1 {
   href?: null;
 }
 export interface Heading1OrParagraphOrHeading2OrNumberedListItem1 {
-  text?: (TextEntityOrCaptionEntity)[] | null;
+  text?: TextEntityOrCaptionEntity[] | null;
 }
 export interface Heading1OrParagraphOrHeading2OrNumberedListItem2 {
-  text?: (TextEntityOrCaptionEntity)[] | null;
+  text?: TextEntityOrCaptionEntity[] | null;
 }
 export interface Image {
-  caption?: (TextEntityOrCaptionEntity)[] | null;
+  caption?: TextEntityOrCaptionEntity[] | null;
   type: string;
   external: External;
 }
