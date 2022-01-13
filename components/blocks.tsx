@@ -72,7 +72,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
         );
       case "image":
         return (
-          <VStack py="4" alignSelf="center" align="flex-start">
+          <VStack py="4" alignSelf="center" align="flex-start" key={block.id}>
             <Box overflow="clip" borderRadius="lg" maxW="2xl">
               <Img
                 src={(block.data as ExternalImageInterface).url}
