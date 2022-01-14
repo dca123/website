@@ -166,6 +166,7 @@ export const getStaticProps: GetStaticProps<
       projectImage,
       blocks: responseToBlocks(pageContentResponse),
     },
+    revalidate: 60,
   };
 };
 
