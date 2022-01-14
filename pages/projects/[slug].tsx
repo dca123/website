@@ -71,6 +71,7 @@ const DotaPage: NextPage<ProjectPagePropsInterface> = ({
             objectFit="cover"
             width="100"
             height="80"
+            priority={true}
           />
         </Box>
         <Flex pt={2} flexWrap="wrap">
