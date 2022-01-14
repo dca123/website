@@ -1,5 +1,13 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Box, Divider, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Link,
+  VStack,
+} from "@chakra-ui/react";
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync, writeFileSync } from "fs";
@@ -49,7 +57,9 @@ const DotaPage: NextPage<ProjectPagePropsInterface> = ({
               {date}
             </Heading>
             <Heading fontWeight="400" fontSize="sm">
-              {githubUrl}
+              <Link href={githubUrl} isExternal={true}>
+                {githubUrl}
+              </Link>
             </Heading>
           </VStack>
         </HStack>

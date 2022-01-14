@@ -8,6 +8,7 @@ import {
   Box,
   Divider,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
@@ -43,37 +44,54 @@ const Home: NextPage<Props> = ({
   return (
     <Layout>
       <VStack align="start">
-        <Heading size="xl" fontWeight="400">
+        <Heading fontSize={["2xl", "4xl"]} fontWeight="400" pl="2">
           Hey,
         </Heading>
-        <HStack py="2">
-          <Heading size="3xl" fontWeight="400">
+        <HStack
+          py="2"
+          // flexDir={["column", "column", "row", "row"]}
+          flexFlow="wrap"
+          // align="center"
+        >
+          <Heading fontSize={["4xl", "4xl", "6xl"]} fontWeight="400" pl="2">
             {"I'm"}
           </Heading>
-          <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip="text">
-            Devinda
+          <Heading
+            fontSize={["5xl", "5xl", "5xl", "6xl"]}
+            py="1"
+            pl={["0", "0", "2"]}
+            bgGradient={nameGradient}
+            bgClip="text"
+          >
+            {"Devinda Senanayake"}
           </Heading>
         </HStack>
-        <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip="text">
+        {/* <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip="text">
           Senanayake
-        </Heading>
+        </Heading> */}
         <Box bgColor={subTextBackground} py="6" px="4" borderRadius="lg">
           <Text fontSize={18}>{subText}</Text>
         </Box>
         <Box height="2"></Box>
-        <HStack justify="space-between" title="Resume">
+        <SimpleGrid spacing={6} columns={[3, 4, 4, 4, 4]}>
           <ExternalLink href={resumeUrl} title="Resume" solid />
           <ExternalLink href={emailUrl} title="Email" />
           <ExternalLink href={linkedInUrl} title="LinkedIn" />
           <ExternalLink href={githubUrl} title="Github" />
-        </HStack>
+        </SimpleGrid>
+        {/* <HStack justify="space-between" title="Resume" flexFlow="wrap">
+          <ExternalLink href={resumeUrl} title="Resume" solid />
+          <ExternalLink href={emailUrl} title="Email" />
+          <ExternalLink href={linkedInUrl} title="LinkedIn" />
+          <ExternalLink href={githubUrl} title="Github" />
+        </HStack> */}
         <Box py="8" w="full">
           <Divider />
         </Box>
         <Heading pb="4" size="lg" fontWeight="400">
           {"Stuff I've Coded"}
         </Heading>
-        <SimpleGrid spacing={6} columns={[1, 2, 3]}>
+        <SimpleGrid spacing={6} columns={[1, 1, 2, 3]}>
           {cards}
         </SimpleGrid>
         <Box alignSelf="center" pt="4">
