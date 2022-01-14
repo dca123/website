@@ -7,17 +7,48 @@ import {
   VStack,
   UnorderedList,
 } from "@chakra-ui/react";
+
 import Image from "next/image";
-import { BlockInterface, ExternalImage } from "../types";
+import { BlockInterface, ExternalImage, RichText } from "../types";
+
+const renderText = (richText: RichText, index: number) => {
+  const { bold, italic, underline, text } = richText;
+  let textNode: JSX.Element = <span>{text}</span>;
+  if (italic) {
+    textNode = <Text as="em">{text}</Text>;
+  }
+  if (underline) {
+    textNode = <Text as="u">{textNode}</Text>;
+  }
+  return (
+    <Text
+      as="span"
+      key={index}
+      fontSize="lg"
+      fontWeight={bold ? "700" : "400"}
+      lineHeight="tall"
+    >
+      {textNode}
+    </Text>
+  );
+};
 
 export const renderBlocks = (blocks: BlockInterface[]) =>
   blocks.map((block: BlockInterface, index) => {
     switch (block.type) {
       case "paragraph":
+        if (Array.isArray(block.data)) {
+          const textArray = block.data.map((text, textIndex) => {
+            return renderText(text as RichText, textIndex);
+          });
+          return <Box key={index}>{textArray}</Box>;
+        }
         return (
-          <Text key={index} fontSize="lg" fontWeight="400" lineHeight="tall">
-            {block.data}
-          </Text>
+          <Box>
+            <Text key={index} fontSize="lg" fontWeight="400" lineHeight="tall">
+              {block.data}
+            </Text>
+          </Box>
         );
       case "heading_1":
         return (

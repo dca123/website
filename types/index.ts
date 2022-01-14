@@ -25,7 +25,15 @@ export interface ExternalImage {
 
 type Lists = string[];
 
-export type BlockData = string | Lists | ExternalImage;
+export type BlockData = string | Lists | ExternalImage | RichText | RichText[];
+
+export interface RichText {
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  text: string;
+}
+
 export interface BlockInterface<T = BlockData> {
   id: string;
   type: AcceptedTypes;

@@ -18,6 +18,7 @@ import {
   ExternalImage,
   ProjectCardProps,
   ProjectProperties,
+  RichText,
 } from "../types";
 
 export const getProjects = async (response: ProjectPropertiesResponse) => {
@@ -66,6 +67,19 @@ const extractTextFromBlock = (
   blockType: TextTypes,
   block: ProjectContentResultsEntity
 ) => {
+  if (block[blockType]!.text!.length > 1) {
+    return (
+      block[blockType]?.text?.map(
+        (block) =>
+          ({
+            text: block?.plain_text ?? "",
+            bold: block?.annotations.bold ?? false,
+            underline: block?.annotations.underline ?? false,
+            italic: block?.annotations.italic ?? false,
+          } as RichText)
+      ) ?? []
+    );
+  }
   return block[blockType]?.text?.[0]?.plain_text ?? "";
 };
 

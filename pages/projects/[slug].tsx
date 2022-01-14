@@ -11,7 +11,6 @@ import {
 import Layout from "../../components/layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync, writeFileSync } from "fs";
-import { AcceptedTypes } from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
 import Image from "next/image";
