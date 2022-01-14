@@ -8,7 +8,6 @@ import {
   Box,
   Divider,
   useColorModeValue,
-  Flex,
 } from "@chakra-ui/react";
 import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
@@ -47,12 +46,7 @@ const Home: NextPage<Props> = ({
         <Heading fontSize={["2xl", "4xl"]} fontWeight="400" pl="2">
           Hey,
         </Heading>
-        <HStack
-          py="2"
-          // flexDir={["column", "column", "row", "row"]}
-          flexFlow="wrap"
-          // align="center"
-        >
+        <HStack py="2" flexFlow="wrap">
           <Heading fontSize={["4xl", "4xl", "6xl"]} fontWeight="400" pl="2">
             {"I'm"}
           </Heading>
@@ -66,25 +60,17 @@ const Home: NextPage<Props> = ({
             {"Devinda Senanayake"}
           </Heading>
         </HStack>
-        {/* <Heading size="3xl" py="1" bgGradient={nameGradient} bgClip="text">
-          Senanayake
-        </Heading> */}
+
         <Box bgColor={subTextBackground} py="6" px="4" borderRadius="lg">
           <Text fontSize={18}>{subText}</Text>
         </Box>
         <Box height="2"></Box>
-        <SimpleGrid spacing={6} columns={[3, 4, 4, 4, 4]}>
+        <SimpleGrid spacing={3} columns={[3, 4]}>
           <ExternalLink href={resumeUrl} title="Resume" solid />
           <ExternalLink href={emailUrl} title="Email" />
           <ExternalLink href={linkedInUrl} title="LinkedIn" />
           <ExternalLink href={githubUrl} title="Github" />
         </SimpleGrid>
-        {/* <HStack justify="space-between" title="Resume" flexFlow="wrap">
-          <ExternalLink href={resumeUrl} title="Resume" solid />
-          <ExternalLink href={emailUrl} title="Email" />
-          <ExternalLink href={linkedInUrl} title="LinkedIn" />
-          <ExternalLink href={githubUrl} title="Github" />
-        </HStack> */}
         <Box py="8" w="full">
           <Divider />
         </Box>
@@ -107,9 +93,10 @@ const Home: NextPage<Props> = ({
 export default Home;
 
 import { getProjects } from "../lib/notion";
-import { BlockInterface } from "./projects/[slug]";
 import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
+import { ProjectCardProps } from "../types";
+
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export const getStaticProps: GetStaticProps = async () => {
   let response;
@@ -126,7 +113,7 @@ export const getStaticProps: GetStaticProps = async () => {
     response = JSON.parse(jsonString);
   }
 
-  const projects: ProjectCardPropsInterface[] = await getProjects(response);
+  const projects: ProjectCardProps[] = await getProjects(response);
 
   const props: Props = {
     subText:
@@ -143,27 +130,11 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export interface ProjectPageInterface extends ProjectCardPropsInterface {
-  date: string;
-  githubUrl: string;
-}
-
-export interface ProjectPagePropsInterface extends ProjectPageInterface {
-  blocks: BlockInterface[];
-}
-export interface ProjectCardPropsInterface {
-  title: string;
-  slug: string;
-  projectImage: string;
-  description: string;
-  skills: string[];
-}
-
 interface Props {
   subText: string;
   resumeUrl: string;
   emailUrl: string;
   linkedInUrl: string;
   githubUrl: string;
-  recentProjects: ProjectCardPropsInterface[];
+  recentProjects: ProjectCardProps[];
 }

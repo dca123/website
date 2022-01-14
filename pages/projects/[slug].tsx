@@ -15,28 +15,15 @@ import { AcceptedTypes } from "../../types/pageResponse";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
 import Image from "next/image";
-export interface ExternalImageInterface {
-  url: string;
-  caption: string;
-}
 
-type Lists = string[];
-
-export type BlockData = string | Lists | ExternalImageInterface;
-export interface BlockInterface<T = BlockData> {
-  id: string;
-  type: AcceptedTypes;
-  data: T;
-}
-
-const DotaPage: NextPage<ProjectPagePropsInterface> = ({
+const DotaPage: NextPage<ProjectPageProps> = ({
   title,
   date,
   githubUrl,
   projectImage,
   skills,
   blocks,
-}: ProjectPagePropsInterface) => {
+}: ProjectPageProps) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
 
@@ -91,11 +78,12 @@ export default DotaPage;
 
 import { Client } from "@notionhq/client";
 import {
+  extractProjectCoverImage,
   extractProjectProperties,
   getProjectSlugs,
   responseToBlocks,
 } from "../../lib/notion";
-import { ProjectPagePropsInterface } from "..";
+import { ProjectPageProps } from "../../types";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {
@@ -122,7 +110,7 @@ interface ProjectPageUrlProps extends ParsedUrlQuery {
 }
 
 export const getStaticProps: GetStaticProps<
-  ProjectPagePropsInterface,
+  ProjectPageProps,
   ProjectPageUrlProps
 > = async (context) => {
   if (!context.params) {
@@ -171,10 +159,12 @@ export const getStaticProps: GetStaticProps<
   const pageProperties = extractProjectProperties(
     pagePropertiesResponse.properties
   );
+  const projectImage = extractProjectCoverImage(pagePropertiesResponse.cover);
 
   return {
     props: {
       ...pageProperties,
+      projectImage,
       blocks: responseToBlocks(pageContentResponse),
     },
   };

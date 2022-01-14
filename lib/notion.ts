@@ -1,25 +1,35 @@
 // const notion = new Client({ auth: process.env.NOTION_API_KEY });
-import { ProjectPropertiesResponse, Properties } from "../types/projectReponse";
-import { ProjectCardPropsInterface, ProjectPageInterface } from "../pages";
-import { ProjectPropertiesResultsEntity } from "../types/projectReponse";
 import {
-  BlockInterface,
-  BlockData,
-  ExternalImageInterface,
-} from "../pages/projects/[slug]";
+  Cover,
+  ProjectPropertiesResponse,
+  Properties,
+} from "../types/projectReponse";
+import { ProjectPropertiesResultsEntity } from "../types/projectReponse";
+
 import {
   AcceptedTypes,
   ProjectContentResponse,
   ProjectContentResultsEntity,
   TextTypes,
 } from "../types/pageResponse";
+import {
+  BlockData,
+  BlockInterface,
+  ExternalImage,
+  ProjectCardProps,
+  ProjectProperties,
+} from "../types";
 
 export const getProjects = async (response: ProjectPropertiesResponse) => {
-  const projects: ProjectCardPropsInterface[] =
+  const projects: ProjectCardProps[] =
     response.results
       ?.map((result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
-        return project;
+        const projectImage = extractProjectCoverImage(result.cover);
+        return {
+          ...project,
+          projectImage,
+        };
       })
       .slice(0, 6) ?? [];
 
@@ -31,14 +41,20 @@ export const getProjectSlugs = async (response: ProjectPropertiesResponse) => {
   return projects.map((project) => ({ params: { slug: project.slug } }));
 };
 
+export const extractProjectCoverImage = (coverImage: Cover) => {
+  if (coverImage.type === "external") {
+    return coverImage.external?.url ?? "";
+  } else if (coverImage.type === "file") {
+    return coverImage.file?.url ?? "";
+  }
+  return "";
+};
+
 export const extractProjectProperties = (
   property: Properties
-): ProjectPageInterface => ({
+): ProjectProperties => ({
   title: property.name.title?.[0].plain_text ?? "",
   slug: property.slug.rich_text?.[0].plain_text ?? "",
-  projectImage: `https://picsum.photos/id/${Math.floor(
-    Math.random() * (500 - 300) + 500
-  )}/1280/720`,
   description: property.description.rich_text?.[0].plain_text ?? "",
   skills:
     property.skills.multi_select?.map((skill) => skill.name).slice(0, 3) ?? [],
@@ -68,7 +84,7 @@ export const extractContentFromResponse = (
       return {
         url: block.image?.external.url,
         caption: block.image?.caption?.[0]?.plain_text,
-      } as ExternalImageInterface;
+      } as ExternalImage;
     default:
       return "text not found";
   }

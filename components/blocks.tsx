@@ -8,10 +8,7 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import {
-  BlockInterface,
-  ExternalImageInterface,
-} from "../pages/projects/[slug]";
+import { BlockInterface, ExternalImage } from "../types";
 
 export const renderBlocks = (blocks: BlockInterface[]) =>
   blocks.map((block: BlockInterface, index) => {
@@ -74,7 +71,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
           <VStack py="4" alignSelf="center" align="flex-start" key={block.id}>
             <Box overflow="clip" borderRadius="lg" w={["xs", "lg", "2xl"]}>
               <Image
-                src={(block.data as ExternalImageInterface).url}
+                src={(block.data as ExternalImage).url}
                 alt="image"
                 layout="responsive"
                 objectFit="cover"
@@ -83,7 +80,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
               />
             </Box>
             <Text variant="caption" pl="2">
-              {(block.data as ExternalImageInterface).caption}
+              {(block.data as ExternalImage).caption}
             </Text>
           </VStack>
         );

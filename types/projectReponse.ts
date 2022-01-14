@@ -9,12 +9,24 @@ export interface ProjectPropertiesResultsEntity {
   id: string;
   created_time: string;
   last_edited_time: string;
-  cover?: null;
+  cover: Cover;
   icon?: null;
   parent: Parent;
   archived: boolean;
   properties: Properties;
   url: string;
+}
+export interface Cover {
+  type: string;
+  external?: External | null;
+  file?: File | null;
+}
+export interface External {
+  url: string;
+}
+export interface File {
+  url: string;
+  expiry_time: string;
 }
 export interface Parent {
   type: string;

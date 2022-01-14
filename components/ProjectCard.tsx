@@ -2,15 +2,14 @@ import {
   Box,
   HStack,
   Tag,
-  VStack,
   Text,
   Heading,
   Flex,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { ProjectCardPropsInterface } from "../pages";
 import Image from "next/image";
+import { ProjectCardProps } from "../types";
 
 export default function ProjectCard({
   title,
@@ -18,7 +17,7 @@ export default function ProjectCard({
   skills,
   slug,
   description,
-}: ProjectCardPropsInterface) {
+}: ProjectCardProps) {
   const bg = useColorModeValue(
     "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))",
     "linear(to-t, hsla(214, 32%, 20%, 0.8), hsla(214, 32%, 20%, 0.6))"
