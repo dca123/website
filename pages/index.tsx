@@ -15,11 +15,11 @@ import Layout from "../components/layout";
 import { ExternalLink } from "../components/ExternalLink";
 
 const Home: NextPage<Props> = ({
-  subText,
-  githubUrl,
-  linkedInUrl,
-  emailUrl,
-  resumeUrl,
+  tagline,
+  github: githubUrl,
+  linkedin: linkedinUrl,
+  email: emailUrl,
+  resume: resumeUrl,
   recentProjects,
 }: Props) => {
   const nameGradient = useColorModeValue(
@@ -62,13 +62,13 @@ const Home: NextPage<Props> = ({
         </HStack>
 
         <Box bgColor={subTextBackground} py="6" px="4" borderRadius="lg">
-          <Text fontSize={18}>{subText}</Text>
+          <Text fontSize={18}>{tagline}</Text>
         </Box>
         <Box height="2"></Box>
         <SimpleGrid spacing={3} columns={[3, 4]}>
           <ExternalLink href={resumeUrl} title="Resume" solid />
           <ExternalLink href={emailUrl} title="Email" />
-          <ExternalLink href={linkedInUrl} title="LinkedIn" />
+          <ExternalLink href={linkedinUrl} title="LinkedIn" />
           <ExternalLink href={githubUrl} title="Github" />
         </SimpleGrid>
         <Box py="8" w="full">
@@ -92,36 +92,45 @@ const Home: NextPage<Props> = ({
 
 export default Home;
 
-import { getProjects } from "../lib/notion";
+import { getPageConfig, getProjects } from "../lib/notion";
 import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
-import { ProjectCardProps } from "../types";
+import { PageConfig, ProjectCardProps } from "../types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
 export const getStaticProps: GetStaticProps = async () => {
   let response;
+  let pageConfigResponse;
   if (process.env.NODE_ENV === "production") {
     const database_id = "4f1fd603748b44d58615d782979d7a1e";
     response = await notion.databases.query({
       database_id,
     });
+    pageConfigResponse = await notion.databases.query({
+      database_id: "c1e06496449b4ebf99adeeb2d0d3ff5f",
+    });
     // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
+    // writeFileSync(
+    //   "test_data/pageConfig.json",
+    //   JSON.stringify(pageConfigResponse),
+    //   "utf8"
+    // );
   } else {
     const jsonString = readFileSync("./test_data/database.json", {
       encoding: "utf8",
     });
+    const pageConfigString = readFileSync("./test_data/pageConfig.json", {
+      encoding: "utf8",
+    });
     response = JSON.parse(jsonString);
+    pageConfigResponse = JSON.parse(pageConfigString);
   }
 
-  const projects: ProjectCardProps[] = await getProjects(response);
-
+  const projects: ProjectCardProps[] = getProjects(response);
+  const pageConfig = getPageConfig(pageConfigResponse);
   const props: Props = {
-    subText:
-      "Full-stack developer with a passion for eliminating repetitive problems. A firm believer in test-driven development and dedicated to building clean interfaces and reliable back ends. Skilled in Javascript, Ruby & Python.",
-    resumeUrl: "/resume.pdf",
-    emailUrl: "mailto:contact@devinda.me",
-    linkedInUrl: "https://www.linkedin.com/in/devindame/",
-    githubUrl: "https://github.com/dca123",
+    ...pageConfig,
     recentProjects: projects,
   };
 
@@ -130,11 +139,6 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-interface Props {
-  subText: string;
-  resumeUrl: string;
-  emailUrl: string;
-  linkedInUrl: string;
-  githubUrl: string;
+interface Props extends PageConfig {
   recentProjects: ProjectCardProps[];
 }

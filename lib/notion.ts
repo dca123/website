@@ -16,12 +16,35 @@ import {
   BlockData,
   BlockInterface,
   ExternalImage,
+  PageConfig,
+  PageConfigProperties,
   ProjectCardProps,
   ProjectProperties,
   RichText,
 } from "../types";
+import { PageConfigResponse } from "../types/pageConfig";
 
-export const getProjects = async (response: ProjectPropertiesResponse) => {
+export const getPageConfig = (response: PageConfigResponse): PageConfig => {
+  const pageConfig: PageConfig = {
+    email: "",
+    github: "",
+    linkedin: "",
+    resume: "",
+    tagline: "",
+  };
+
+  response.results?.forEach((property) => {
+    const propertyName =
+      property.properties.property.title?.[0].plain_text ?? "";
+    const propertyValue =
+      property.properties.content.rich_text?.[0]?.plain_text ?? "";
+    pageConfig[propertyName as PageConfigProperties] = propertyValue;
+  });
+
+  return pageConfig;
+};
+
+export const getProjects = (response: ProjectPropertiesResponse) => {
   const projects: ProjectCardProps[] =
     response.results
       ?.map((result: ProjectPropertiesResultsEntity) => {
@@ -38,7 +61,7 @@ export const getProjects = async (response: ProjectPropertiesResponse) => {
 };
 
 export const getProjectSlugs = async (response: ProjectPropertiesResponse) => {
-  const projects = await getProjects(response);
+  const projects = getProjects(response);
   return projects.map((project) => ({ params: { slug: project.slug } }));
 };
 

@@ -39,3 +39,11 @@ export interface BlockInterface<T = BlockData> {
   type: AcceptedTypes;
   data: T;
 }
+
+export type PageConfigProperties =
+  | "tagline"
+  | "github"
+  | "linkedin"
+  | "email"
+  | "resume";
+export type PageConfig = Record<PageConfigProperties, string>;
