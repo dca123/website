@@ -58,8 +58,9 @@ const DotaPage: NextPage<ProjectPageProps> = ({
             alt="image"
             layout="responsive"
             objectFit="cover"
-            width="100"
-            height="80"
+            sizes="50vw"
+            width={100}
+            height={80}
             priority={true}
           />
         </Box>

@@ -106,8 +106,9 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
                 alt="image"
                 layout="responsive"
                 objectFit="cover"
-                width="100"
-                height="100"
+                sizes="50vw"
+                width={100}
+                height={100}
               />
             </Box>
             <Text variant="caption" pl="2">
