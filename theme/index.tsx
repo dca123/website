@@ -16,14 +16,20 @@ export const theme = extendTheme({
     heading: "Montserrat",
     body: "Nunito",
   },
+  shadows: {
+    card_dark: "5px 5px 0 #EB5753",
+    card_light: "5px 5px 0 #EB5753",
+  },
   components: {
-    Card: {
-      baseStye: () => ({
-        borderRadius: "xl",
-        overflow: "hidden",
-        bgGradient:
-          "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))",
-      }),
+    Flex: {
+      variants: {
+        card: ({ colorMode }: VariantProps) => ({
+          _hover: {
+            boxShadow: colorMode === "dark" ? "card_dark" : "card_light",
+            cursor: "pointer",
+          },
+        }),
+      },
     },
     Text: {
       variants: {

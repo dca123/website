@@ -29,7 +29,13 @@ export const ExternalLink = ({
     );
   } else {
     button = (
-      <Button size="md" colorScheme="gray" variant="ghost" fontWeight="400">
+      <Button
+        size="md"
+        colorScheme="gray"
+        variant="ghost"
+        fontWeight="400"
+        w="full"
+      >
         {title}
       </Button>
     );

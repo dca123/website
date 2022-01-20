@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { ExternalLink } from "../components/ExternalLink";
 
 const Home: NextPage<Props> = ({
@@ -42,6 +42,9 @@ const Home: NextPage<Props> = ({
 
   return (
     <Layout>
+      <Head>
+        <title>Devinda Senanayake</title>
+      </Head>
       <VStack align="start">
         <Heading fontSize={["2xl", "4xl"]} fontWeight="400" pl="2">
           Hey,
@@ -96,6 +99,7 @@ import { getPageConfig, getProjects } from "../lib/notion";
 import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
 import { PageConfig, ProjectCardProps } from "../types";
+import Head from "next/head";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 

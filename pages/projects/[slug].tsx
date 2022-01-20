@@ -8,7 +8,7 @@ import {
   Link,
   VStack,
 } from "@chakra-ui/react";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync, writeFileSync } from "fs";
 import { renderBlocks } from "../../components/blocks";
@@ -28,6 +28,9 @@ const DotaPage: NextPage<ProjectPageProps> = ({
 
   return (
     <Layout>
+      <Head>
+        <title>{title} | Devinda Senanayake </title>
+      </Head>
       <VStack align="flex-start">
         <HStack justify="space-between" w="full" mb={4}>
           <Heading
@@ -83,6 +86,7 @@ import {
   responseToBlocks,
 } from "../../lib/notion";
 import { ProjectPageProps } from "../../types";
+import Head from "next/head";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {

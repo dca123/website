@@ -80,8 +80,7 @@ export const extractProjectProperties = (
   title: property.name.title?.[0].plain_text ?? "",
   slug: property.slug.rich_text?.[0].plain_text ?? "",
   description: property.description.rich_text?.[0].plain_text ?? "",
-  skills:
-    property.skills.multi_select?.map((skill) => skill.name).slice(0, 3) ?? [],
+  skills: property.skills.multi_select?.map((skill) => skill.name) ?? [],
   date: property.date.date.start,
   githubUrl: property.github.rich_text?.[0].plain_text ?? "",
 });
