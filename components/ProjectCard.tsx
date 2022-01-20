@@ -62,8 +62,9 @@ export default function ProjectCard({
                 alt="image"
                 objectFit="cover"
                 layout="responsive"
-                width="120"
-                height="75"
+                sizes="30vw"
+                width={120}
+                height={75}
               />
             </Box>
             <Flex

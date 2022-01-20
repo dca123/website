@@ -81,7 +81,7 @@ const Projects = () => {
       >
         {"All Projects"}
       </Heading>
-      <SimpleGrid columns={[1, 2, 3]} spacing={10} mt={16}>
+      <SimpleGrid columns={[1, 2, 3]} spacing={[4, 5, 10]} mt={16}>
         {items}
       </SimpleGrid>
     </Layout>
