@@ -2,7 +2,6 @@ import {
   VStack,
   Heading,
   Text,
-  Button,
   HStack,
   SimpleGrid,
   Box,
@@ -13,15 +12,17 @@ import type { GetStaticProps, NextPage } from "next";
 import ProjectCard from "../components/ProjectCard";
 import Layout from "../components/Layout";
 import { ExternalLink } from "../components/ExternalLink";
+import { FaLinkedinIn, FaGithub, FaEnvelope } from "react-icons/fa";
 
 const Home: NextPage<Props> = ({
   tagline,
   github: githubUrl,
   linkedin: linkedinUrl,
-  email: emailUrl,
+  email,
   resume: resumeUrl,
   recentProjects,
 }: Props) => {
+  const emailUrl = `mailto:${email}`;
   const nameGradient = useColorModeValue(
     "linear(to-r, hsla(27, 84%, 57%, 1), hsla(7, 84%, 57%, 0.7))",
     "linear(to-r, hsla(27, 84%, 57%, 1), hsla(7, 84%, 57%, 0.7))"
@@ -70,9 +71,13 @@ const Home: NextPage<Props> = ({
         <Box height="2"></Box>
         <SimpleGrid spacing={3} columns={[3, 4]}>
           <ExternalLink href={resumeUrl} title="Resume" solid />
-          <ExternalLink href={emailUrl} title="Email" />
-          <ExternalLink href={linkedinUrl} title="LinkedIn" />
-          <ExternalLink href={githubUrl} title="Github" />
+          <ExternalLink href={emailUrl} title="Email" icon={FaEnvelope} />
+          <ExternalLink
+            href={linkedinUrl}
+            title="LinkedIn"
+            icon={FaLinkedinIn}
+          />
+          <ExternalLink href={githubUrl} title="Github" icon={FaGithub} />
         </SimpleGrid>
         <Box py="8" w="full">
           <Divider />
@@ -83,11 +88,6 @@ const Home: NextPage<Props> = ({
         <SimpleGrid spacing={6} columns={[1, 1, 2, 3]}>
           {cards}
         </SimpleGrid>
-        <Box alignSelf="center" pt="4">
-          <Button fontSize="lg" size="md" variant="outline" fontWeight="400">
-            More Projects
-          </Button>
-        </Box>
       </VStack>
     </Layout>
   );
