@@ -62,7 +62,7 @@ export default function ProjectCard({
                 alt="image"
                 objectFit="cover"
                 layout="responsive"
-                sizes="20vw"
+                sizes="50vw, 20vw"
                 width={120}
                 height={75}
               />

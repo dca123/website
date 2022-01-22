@@ -103,7 +103,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
             <Box overflow="clip" borderRadius="lg" w={["xs", "lg", "2xl"]}>
               <Image
                 src={(block.data as ExternalImage).url}
-                alt="image"
+                alt={(block.data as ExternalImage).caption}
                 layout="responsive"
                 objectFit="cover"
                 sizes="50vw"

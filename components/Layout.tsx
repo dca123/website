@@ -22,10 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Heading>
           </a>
         </Link>
-        <Link href="/projects">
+        <Link href="/about">
           <a>
             <Heading fontWeight="500" fontSize="md" px="4">
-              Projects
+              About
             </Heading>
           </a>
         </Link>

@@ -2,7 +2,8 @@
   "conventionalCommits.scopes": [
     "_app",
     " index",
-    "projects"
+    "projects",
+    "about"
   ],
   "editor.formatOnSave": true
 }
