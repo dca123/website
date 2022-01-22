@@ -31,7 +31,7 @@ export default function ProjectCard({
   //   "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))",
   //   "linear(to-t, hsla(214, 32%, 20%, 0.8), hsla(214, 32%, 20%, 0.6))"
   // );
-  const shadow = useColorModeValue("6px 6px #ED8936", "6px 6px #F6AD55");
+  const shadow = useColorModeValue("5px 4px #DD6B20", "5px 4px #ED8936");
   const bg = useColorModeValue("gray.200", "gray.700");
   const skillStack = skills.slice(0, 3).map((skill) => {
     return (
