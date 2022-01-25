@@ -6,7 +6,6 @@ import {
   Heading,
   Flex,
   useColorModeValue,
-  useTheme,
   chakra,
   HTMLChakraProps,
 } from "@chakra-ui/react";
@@ -33,9 +32,9 @@ export default function ProjectCard({
   // );
   const shadow = useColorModeValue("5px 4px #DD6B20", "5px 4px #ED8936");
   const bg = useColorModeValue("gray.200", "gray.700");
-  const skillStack = skills.slice(0, 3).map((skill) => {
+  const skillStack = skills.slice(0, 3).map((skill, index) => {
     return (
-      <Tag size="md" key="tag">
+      <Tag size="md" key={skill + index}>
         {skill}
       </Tag>
     );
@@ -50,7 +49,7 @@ export default function ProjectCard({
         boxShadow: shadow,
         // transition: { bounce: 1 },
       }}
-      whileTap={{ scale: 0.9 }}
+      whileTap={{ scale: 0.98 }}
       borderRadius="md"
     >
       <Box borderRadius="lg" overflow="hidden" h="full">
