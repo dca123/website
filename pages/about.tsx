@@ -66,7 +66,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      blocks: responseToBlocks(pageContentResponse),
+      blocks: await responseToBlocks(pageContentResponse),
     },
   };
 };
