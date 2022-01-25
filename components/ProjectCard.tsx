@@ -49,7 +49,7 @@ export default function ProjectCard({
         boxShadow: shadow,
         // transition: { bounce: 1 },
       }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.99 }}
       borderRadius="md"
     >
       <Box borderRadius="lg" overflow="hidden" h="full">
