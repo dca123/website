@@ -973,6 +973,11 @@
     "@types/node-fetch" "^2.5.10"
     node-fetch "^2.6.1"
 
+"@plaiceholder/next@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@plaiceholder/next/-/next-2.2.0.tgz#e75338ec861cba62713c8876714bd602f0bf7c47"
+  integrity sha512-RRn6nivDVK5ibtcaYX50TClIS6gXVTClRp1PWaZfXvvdowTR+MRKjFSA2K4FAAk0O65pxPYLz1O2VaHiGN/6DA==
+
 "@popperjs/core@^2.9.3":
   version "2.11.0"
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.0.tgz"
