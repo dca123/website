@@ -5,7 +5,7 @@ import { renderBlocks } from "../components/blocks";
 import { AboutPageProps } from "../types";
 import { GetStaticProps, NextPage } from "next";
 
-const AboutMe: NextPage<AboutPageProps> = ({ blocks }) => {
+const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
   const blocksContent = renderBlocks(blocks);
   return (
     <Layout>
@@ -27,7 +27,9 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks }) => {
               objectFit="cover"
               layout="responsive"
               sizes="50vw"
-              src="/images/me.jpg"
+              src={imageUrl}
+              blurDataURL={blurImage}
+              placeholder="blur"
             />
           </Box>
         </VStack>
@@ -42,6 +44,7 @@ export default AboutMe;
 import { Client } from "@notionhq/client";
 import { readFileSync, writeFileSync } from "fs";
 import { responseToBlocks } from "../lib/notion";
+import { getPlaiceholder } from "plaiceholder";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -64,9 +67,13 @@ export const getStaticProps: GetStaticProps = async () => {
     pageContentResponse = JSON.parse(pageContentJsonString);
   }
 
+  const { base64, img } = await getPlaiceholder("/images/me.jpg");
+
   return {
     props: {
       blocks: await responseToBlocks(pageContentResponse),
+      imageUrl: img,
+      blurImage: base64,
     },
   };
 };
