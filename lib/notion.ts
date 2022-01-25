@@ -32,8 +32,10 @@ export const getPageConfig = (response: PageConfigResponse): PageConfig => {
     resume: "",
     tagline: "",
   };
-
   response.results?.forEach((property) => {
+    if (property.properties.property.title!.length < 1) {
+      throw new Error(`Propert Config with id ${property.id} is missing`);
+    }
     const propertyName =
       property.properties.property.title?.[0].plain_text ?? "";
     const propertyValue =

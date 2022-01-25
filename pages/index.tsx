@@ -104,17 +104,21 @@ import Head from "next/head";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export const getStaticProps: GetStaticProps = async () => {
-  let response;
+  let projectsListResponse;
   let pageConfigResponse;
   if (process.env.NODE_ENV === "production") {
     const database_id = "4f1fd603748b44d58615d782979d7a1e";
-    response = await notion.databases.query({
+    projectsListResponse = await notion.databases.query({
       database_id,
     });
     pageConfigResponse = await notion.databases.query({
       database_id: "c1e06496449b4ebf99adeeb2d0d3ff5f",
     });
-    // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
+    // writeFileSync(
+    //   "test_data/database.json",
+    //   JSON.stringify(projectsListResponse),
+    //   "utf8"
+    // );
     // writeFileSync(
     //   "test_data/pageConfig.json",
     //   JSON.stringify(pageConfigResponse),
@@ -127,11 +131,11 @@ export const getStaticProps: GetStaticProps = async () => {
     const pageConfigString = readFileSync("./test_data/pageConfig.json", {
       encoding: "utf8",
     });
-    response = JSON.parse(jsonString);
+    projectsListResponse = JSON.parse(jsonString);
     pageConfigResponse = JSON.parse(pageConfigString);
   }
 
-  const projects: ProjectCardProps[] = getProjects(response);
+  const projects: ProjectCardProps[] = getProjects(projectsListResponse);
   const pageConfig = getPageConfig(pageConfigResponse);
   const props: Props = {
     ...pageConfig,
