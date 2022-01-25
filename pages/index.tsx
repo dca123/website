@@ -37,6 +37,7 @@ const Home: NextPage<Props> = ({
         skills={project.skills}
         description={project.description}
         slug={project.slug}
+        projectImageBlur={project.projectImageBlur}
       />
     );
   });
@@ -135,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
     pageConfigResponse = JSON.parse(pageConfigString);
   }
 
-  const projects: ProjectCardProps[] = getProjects(projectsListResponse);
+  const projects: ProjectCardProps[] = await getProjects(projectsListResponse);
   const pageConfig = getPageConfig(pageConfigResponse);
   const props: Props = {
     ...pageConfig,

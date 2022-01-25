@@ -23,6 +23,7 @@ import {
   RichText,
 } from "../types";
 import { PageConfigResponse } from "../types/pageConfig";
+import { getPlaiceholder } from "plaiceholder";
 
 export const getPageConfig = (response: PageConfigResponse): PageConfig => {
   const pageConfig: PageConfig = {
@@ -46,24 +47,28 @@ export const getPageConfig = (response: PageConfigResponse): PageConfig => {
   return pageConfig;
 };
 
-export const getProjects = (response: ProjectPropertiesResponse) => {
-  const projects: ProjectCardProps[] =
+export const getProjects = async (response: ProjectPropertiesResponse) => {
+  const projects =
     response.results
-      ?.map((result: ProjectPropertiesResultsEntity) => {
+      ?.map(async (result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
+        const projectImageBlur = (
+          await getPlaiceholder(projectImage, { size: 64 })
+        ).base64;
         return {
           ...project,
           projectImage,
-        };
+          projectImageBlur,
+        } as ProjectCardProps;
       })
       .slice(0, 6) ?? [];
 
-  return projects;
+  return Promise.all(projects);
 };
 
 export const getProjectSlugs = async (response: ProjectPropertiesResponse) => {
-  const projects = getProjects(response);
+  const projects = await getProjects(response);
   return projects.map((project) => ({ params: { slug: project.slug } }));
 };
 
@@ -107,10 +112,10 @@ const extractTextFromBlock = (
   return block[blockType]?.text?.[0]?.plain_text ?? "";
 };
 
-export const extractContentFromResponse = (
+export const extractContentFromResponse = async (
   blockType: AcceptedTypes,
   block: ProjectContentResultsEntity
-): BlockData => {
+): Promise<BlockData> => {
   switch (blockType) {
     case "heading_1":
     case "heading_2":
@@ -121,6 +126,9 @@ export const extractContentFromResponse = (
     case "image":
       return {
         url: block.image?.external.url,
+        blurUrl: (
+          await getPlaiceholder(block.image?.external.url ?? "", { size: 48 })
+        ).base64,
         caption: block.image?.caption?.[0]?.plain_text,
       } as ExternalImage;
     default:
@@ -157,17 +165,18 @@ export const groupListBlocks = (blocks: BlockInterface[]): BlockInterface[] => {
   return ans;
 };
 
-export const responseToBlocks = (
+export const responseToBlocks = async (
   response: ProjectContentResponse
-): BlockInterface[] => {
-  let blockContent =
-    response.results?.map((result, index) => {
+): Promise<BlockInterface[]> => {
+  const blockContent = Promise.all(
+    response.results?.map(async (result, index) => {
       return {
         id: index.toString(),
         type: result.type,
-        data: extractContentFromResponse(result.type, result),
+        data: await extractContentFromResponse(result.type, result),
       } as BlockInterface;
-    }) ?? [];
-  blockContent = groupListBlocks(blockContent);
-  return blockContent;
+    }) ?? []
+  );
+  const groupedBlocks = groupListBlocks(await blockContent);
+  return groupedBlocks;
 };

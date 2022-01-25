@@ -25,6 +25,7 @@ export default function ProjectCard({
   skills,
   slug,
   description,
+  projectImageBlur,
 }: ProjectCardProps) {
   // const bg = useColorModeValue(
   //   "linear(to-t, hsla(214, 32%, 90%, 1), hsla(214, 32%, 90%, 0.2))",
@@ -64,6 +65,8 @@ export default function ProjectCard({
                 sizes="50vw, 20vw"
                 width={120}
                 height={75}
+                blurDataURL={projectImageBlur}
+                placeholder="blur"
               />
             </Box>
             <Flex

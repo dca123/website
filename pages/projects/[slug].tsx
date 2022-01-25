@@ -21,6 +21,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
   projectImage,
   skills,
   blocks,
+  projectImageBlur,
 }) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
@@ -61,6 +62,8 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
             width={100}
             height={80}
             priority={true}
+            placeholder="blur"
+            blurDataURL={projectImageBlur}
           />
         </Box>
         <Flex pt={2} flexWrap="wrap">
@@ -87,6 +90,7 @@ import {
 import { ProjectPageProps } from "../../types";
 import { ParsedUrlQuery } from "querystring";
 import { readFileSync, writeFileSync } from "fs";
+import { getPlaiceholder } from "plaiceholder";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -164,12 +168,14 @@ export const getStaticProps: GetStaticProps<
     pagePropertiesResponse.properties
   );
   const projectImage = extractProjectCoverImage(pagePropertiesResponse.cover);
-
+  const projectImageBlur = (await getPlaiceholder(projectImage, { size: 64 }))
+    .base64;
   return {
     props: {
       ...pageProperties,
       projectImage,
-      blocks: responseToBlocks(pageContentResponse),
+      projectImageBlur,
+      blocks: await responseToBlocks(pageContentResponse),
     },
     revalidate: 60,
   };

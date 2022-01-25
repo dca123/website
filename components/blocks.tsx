@@ -107,6 +107,8 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
                 sizes="50vw"
                 width={100}
                 height={100}
+                placeholder="blur"
+                blurDataURL={(block.data as ExternalImage).blurUrl}
               />
             </Box>
             <Text variant="caption" pl="2">

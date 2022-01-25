@@ -11,6 +11,7 @@ export interface ProjectProperties {
 export interface ProjectCardProps
   extends Omit<ProjectProperties, "githubUrl" | "date"> {
   projectImage: string;
+  projectImageBlur: string;
 }
 export interface ProjectPageProps
   extends ProjectCardProps,
@@ -23,6 +24,7 @@ export interface AboutPageProps {
 }
 export interface ExternalImage {
   url: string;
+  blurUrl: string;
   caption: string;
 }
 
