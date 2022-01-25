@@ -9,11 +9,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Layout from "../../components/Layout";
-import { ParsedUrlQuery } from "querystring";
-import { readFileSync, writeFileSync } from "fs";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
 import Image from "next/image";
+import Head from "next/head";
 
 const DotaPage: NextPage<ProjectPageProps> = ({
   title,
@@ -22,7 +21,7 @@ const DotaPage: NextPage<ProjectPageProps> = ({
   projectImage,
   skills,
   blocks,
-}: ProjectPageProps) => {
+}) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
 
@@ -87,7 +86,9 @@ import {
   responseToBlocks,
 } from "../../lib/notion";
 import { ProjectPageProps } from "../../types";
-import Head from "next/head";
+import { ParsedUrlQuery } from "querystring";
+import { readFileSync, writeFileSync } from "fs";
+
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {

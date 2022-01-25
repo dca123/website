@@ -18,6 +18,9 @@ export interface ProjectPageProps
   blocks: BlockInterface[];
 }
 
+export interface AboutPageProps {
+  blocks: BlockInterface[];
+}
 export interface ExternalImage {
   url: string;
   caption: string;

@@ -44,11 +44,9 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
           return <Box key={index}>{textArray}</Box>;
         }
         return (
-          <Box>
-            <Text key={index} fontSize="lg" fontWeight="400" lineHeight="tall">
-              {block.data}
-            </Text>
-          </Box>
+          <Text key={index} fontSize="lg" fontWeight="400" lineHeight="tall">
+            {block.data}
+          </Text>
         );
       case "heading_1":
         return (
