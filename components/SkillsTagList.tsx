@@ -7,7 +7,7 @@ export const renderSkillTags = (skills: string[]) =>
         size="lg"
         colorScheme="orange"
         fontWeight="700"
-        key="tag"
+        key={skill}
         mx="1"
         my="1"
       >

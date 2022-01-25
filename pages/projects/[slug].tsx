@@ -14,7 +14,7 @@ import { renderSkillTags } from "../../components/SkillsTagList";
 import Image from "next/image";
 import Head from "next/head";
 
-const DotaPage: NextPage<ProjectPageProps> = ({
+const ProjectPage: NextPage<ProjectPageProps> = ({
   title,
   date,
   githubUrl,
@@ -69,14 +69,13 @@ const DotaPage: NextPage<ProjectPageProps> = ({
         <Box py="6" w="full">
           <Divider />
         </Box>
-
         <VStack align="flex-start">{blocksContent}</VStack>
       </VStack>
     </Layout>
   );
 };
 
-export default DotaPage;
+export default ProjectPage;
 
 import { Client } from "@notionhq/client";
 import {
