@@ -70,7 +70,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   const img = "/images/me.jpg";
-  const base64 = await getBase64PlaceHolder(img, 64);
+  const base64 = await getBase64PlaceHolder(img, 48);
 
   return {
     props: {
