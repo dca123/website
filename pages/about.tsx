@@ -21,6 +21,7 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
         <VStack alignSelf="center">
           <Box borderRadius="lg" w={["xs", "md"]} mb="10%" overflow="clip">
             <Image
+              priority
               alt="Picture of me"
               width={112}
               height={120}
