@@ -7,9 +7,11 @@ import {
   Button,
   useColorMode,
   Link as ChakraLink,
+  VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Footer } from "./Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -17,8 +19,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const activeWeight = (path: string) =>
     router.pathname === path ? "700" : "500";
   return (
-    <Container maxW={["container.sm", "container.lg"]}>
-      <HStack justify="flex-end" mt="8">
+    <Container maxW={["container.sm", "container.lg"]} h="95vh">
+      <HStack justify="flex-end" pt="8">
         <Heading fontWeight={activeWeight("/")} fontSize="md" px="4">
           <Link href="/" passHref>
             <ChakraLink>Home</ChakraLink>
@@ -37,9 +39,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
         </Button>
       </HStack>
-      <Box height={["14", "24"]}></Box>
-      <Box px={["2", "16", "0"]}>{children}</Box>
-      <Box height={["14", "24"]}></Box>
+      <VStack justifyContent="space-between" h="full">
+        <Box>
+          <Box height={["10", "20"]}></Box>
+          <Box px={["2", "16", "0"]}>{children}</Box>
+        </Box>
+        <Footer colorMode={colorMode} />
+      </VStack>
     </Container>
   );
 }

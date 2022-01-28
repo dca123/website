@@ -97,6 +97,7 @@ const Home: NextPage<Props> = ({
 export default Home;
 
 import { getPageConfig, getProjects } from "../lib/notion";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
 import { PageConfig, ProjectCardProps } from "../types";

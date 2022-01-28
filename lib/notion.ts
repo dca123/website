@@ -23,7 +23,7 @@ import {
   RichText,
 } from "../types";
 import { PageConfigResponse } from "../types/pageConfig";
-import { getPlaiceholder } from "plaiceholder";
+import { getBase64PlaceHolder } from "./placeholder";
 
 export const getPageConfig = (response: PageConfigResponse): PageConfig => {
   const pageConfig: PageConfig = {
@@ -53,9 +53,7 @@ export const getProjects = async (response: ProjectPropertiesResponse) => {
       ?.map(async (result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
-        const projectImageBlur = (
-          await getPlaiceholder(projectImage, { size: 64 })
-        ).base64;
+        const projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
         return {
           ...project,
           projectImage,
@@ -126,9 +124,10 @@ export const extractContentFromResponse = async (
     case "image":
       return {
         url: block.image?.external.url,
-        blurUrl: (
-          await getPlaiceholder(block.image?.external.url ?? "", { size: 48 })
-        ).base64,
+        blurUrl: await getBase64PlaceHolder(
+          block.image?.external.url ?? "",
+          48
+        ),
         caption: block.image?.caption?.[0]?.plain_text,
       } as ExternalImage;
     default:

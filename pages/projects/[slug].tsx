@@ -89,8 +89,9 @@ import {
 } from "../../lib/notion";
 import { ProjectPageProps } from "../../types";
 import { ParsedUrlQuery } from "querystring";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { readFileSync, writeFileSync } from "fs";
-import { getPlaiceholder } from "plaiceholder";
+import { getBase64PlaceHolder } from "../../lib/placeholder";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -168,8 +169,7 @@ export const getStaticProps: GetStaticProps<
     pagePropertiesResponse.properties
   );
   const projectImage = extractProjectCoverImage(pagePropertiesResponse.cover);
-  const projectImageBlur = (await getPlaiceholder(projectImage, { size: 64 }))
-    .base64;
+  const projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
   return {
     props: {
       ...pageProperties,

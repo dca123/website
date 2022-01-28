@@ -42,9 +42,10 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
 export default AboutMe;
 
 import { Client } from "@notionhq/client";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { readFileSync, writeFileSync } from "fs";
 import { responseToBlocks } from "../lib/notion";
-import { getPlaiceholder } from "plaiceholder";
+import { getBase64PlaceHolder } from "../lib/placeholder";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -67,7 +68,8 @@ export const getStaticProps: GetStaticProps = async () => {
     pageContentResponse = JSON.parse(pageContentJsonString);
   }
 
-  const { base64, img } = await getPlaiceholder("/images/me.jpg");
+  const img = "/images/me.jpg";
+  const base64 = await getBase64PlaceHolder(img, 64);
 
   return {
     props: {
