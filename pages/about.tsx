@@ -78,5 +78,6 @@ export const getStaticProps: GetStaticProps = async () => {
       imageUrl: img,
       blurImage: base64,
     },
+    revalidate: 60,
   };
 };
