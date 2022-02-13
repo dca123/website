@@ -22,8 +22,9 @@ import {
   ProjectProperties,
   RichText,
 } from "../types";
-import { PageConfigResponse } from "../types/pageConfig";
+import { PageConfigResponse, RichTextEntity } from "../types/pageConfig";
 import { getBase64PlaceHolder } from "./placeholder";
+import { Client } from "@notionhq/client";
 
 export const getPageConfig = (response: PageConfigResponse): PageConfig => {
   const pageConfig: PageConfig = {
@@ -47,13 +48,18 @@ export const getPageConfig = (response: PageConfigResponse): PageConfig => {
   return pageConfig;
 };
 
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export const getProjects = async (response: ProjectPropertiesResponse) => {
   const projects =
     response.results
       ?.map(async (result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
-        const projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
+        let projectImageBlur = project.imageBlur;
+        if (project.imageBlur === "" && process.env.NODE_ENV === "production") {
+          projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
+          updateImageBlur(result, projectImageBlur);
+        }
         return {
           ...project,
           projectImage,
@@ -73,8 +79,6 @@ export const getProjectSlugs = async (response: ProjectPropertiesResponse) => {
 export const extractProjectCoverImage = (coverImage: Cover) => {
   if (coverImage.type === "external") {
     return coverImage.external?.url ?? "";
-  } else if (coverImage.type === "file") {
-    return coverImage.file?.url ?? "";
   }
   return "";
 };
@@ -88,6 +92,7 @@ export const extractProjectProperties = (
   skills: property.skills.multi_select?.map((skill) => skill.name) ?? [],
   date: property.date.date.start,
   githubUrl: property.github.rich_text?.[0].plain_text ?? "",
+  imageBlur: property.image_blur.rich_text?.[0]?.plain_text ?? "",
 });
 
 const extractTextFromBlock = (
@@ -178,4 +183,24 @@ export const responseToBlocks = async (
   );
   const groupedBlocks = groupListBlocks(await blockContent);
   return groupedBlocks;
+};
+const updateImageBlur = (
+  result: ProjectPropertiesResultsEntity,
+  projectImageBlur: string
+) => {
+  notion.pages.update({
+    page_id: result.id,
+    properties: {
+      image_blur: {
+        rich_text: [
+          {
+            type: "text",
+            text: {
+              content: projectImageBlur,
+            },
+          },
+        ],
+      },
+    },
+  });
 };

@@ -7,6 +7,7 @@ export interface ProjectProperties {
   date: string;
   githubUrl: string;
   description: string;
+  imageBlur: string;
 }
 export interface ProjectCardProps
   extends Omit<ProjectProperties, "githubUrl" | "date"> {

@@ -18,30 +18,26 @@ export interface ProjectPropertiesResultsEntity {
 }
 export interface Cover {
   type: string;
-  external?: External | null;
-  file?: File | null;
+  external: External;
 }
 export interface External {
   url: string;
-}
-export interface File {
-  url: string;
-  expiry_time: string;
 }
 export interface Parent {
   type: string;
   database_id: string;
 }
 export interface Properties {
-  github: GithubOrDescriptionOrSlug;
-  description: GithubOrDescriptionOrSlug;
+  github: GithubOrDescriptionOrSlugOrImageBlur;
+  description: GithubOrDescriptionOrSlugOrImageBlur;
   skills: Skills;
   published: Published;
   date: Date;
-  slug: GithubOrDescriptionOrSlug;
+  image_blur: ImageBlur;
+  slug: GithubOrDescriptionOrSlugOrImageBlur;
   name: Name;
 }
-export interface GithubOrDescriptionOrSlug {
+export interface GithubOrDescriptionOrSlugOrImageBlur {
   id: string;
   type: string;
   rich_text?: RichTextEntityOrTitleEntity[] | null;
@@ -89,6 +85,18 @@ export interface Date1 {
   start: string;
   end?: null;
   time_zone?: null;
+}
+export interface ImageBlur {
+  id: string;
+  type: string;
+  rich_text?: (RichTextEntityOrTitleEntity1 | null)[] | null;
+}
+export interface RichTextEntityOrTitleEntity1 {
+  type: string;
+  text: Text;
+  annotations: Annotations;
+  plain_text: string;
+  href?: null;
 }
 export interface Name {
   id: string;

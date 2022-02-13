@@ -38,6 +38,7 @@ const Home: NextPage<Props> = ({
         description={project.description}
         slug={project.slug}
         projectImageBlur={project.projectImageBlur}
+        imageBlur={project.imageBlur}
       />
     );
   });
