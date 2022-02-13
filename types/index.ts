@@ -21,8 +21,6 @@ export interface ProjectPageProps
 
 export interface AboutPageProps {
   blocks: BlockInterface[];
-  imageUrl: string;
-  blurImage: string;
 }
 export interface ExternalImage {
   url: string;

@@ -1,11 +1,11 @@
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import { Box, Center, Heading, VStack } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import Image from "next/image";
 import { renderBlocks } from "../components/blocks";
 import { AboutPageProps } from "../types";
 import { GetStaticProps, NextPage } from "next";
 
-const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
+const AboutMe: NextPage<AboutPageProps> = ({ blocks }) => {
   const blocksContent = renderBlocks(blocks);
   return (
     <Layout>
@@ -18,7 +18,7 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
         {"About Me"}
       </Heading>
       <VStack w="full" pt="8">
-        <VStack alignSelf="center">
+        <Center>
           <Box borderRadius="lg" w={["xs", "md"]} mb="10%" overflow="clip">
             <Image
               priority
@@ -32,8 +32,8 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
               placeholder="blur"
             />
           </Box>
-        </VStack>
-        {blocksContent}
+        </Center>
+        <VStack align="flex-start">{blocksContent}</VStack>
       </VStack>
     </Layout>
   );
