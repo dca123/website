@@ -9,6 +9,7 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks }) => {
   const blocksContent = renderBlocks(blocks);
   return (
     <Layout>
+      <Title title="About Me" />
       <Heading
         fontSize="2xl"
         fontWeight="500"
@@ -46,6 +47,7 @@ import { Client } from "@notionhq/client";
 import { readFileSync, writeFileSync } from "fs";
 import { responseToBlocks } from "../lib/notion";
 import img from "../public/images/me.jpg";
+import { Title } from "../components/Title";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export const getStaticProps: GetStaticProps = async () => {

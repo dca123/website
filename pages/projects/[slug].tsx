@@ -12,7 +12,6 @@ import Layout from "../../components/Layout";
 import { renderBlocks } from "../../components/blocks";
 import { renderSkillTags } from "../../components/SkillsTagList";
 import Image from "next/image";
-import Head from "next/head";
 
 const ProjectPage: NextPage<ProjectPageProps> = ({
   title,
@@ -28,9 +27,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
 
   return (
     <Layout>
-      <Head>
-        <title>{title} | Devinda Senanayake </title>
-      </Head>
+      <Title title={title} />
       <VStack align="flex-start">
         <HStack justify="space-between" w="full" mb={4}>
           <Heading
@@ -92,6 +89,7 @@ import { ParsedUrlQuery } from "querystring";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { readFileSync, writeFileSync } from "fs";
 import { getBase64PlaceHolder } from "../../lib/placeholder";
+import { Title } from "../../components/Title";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 

@@ -44,9 +44,7 @@ const Home: NextPage<Props> = ({
 
   return (
     <Layout>
-      <Head>
-        <title>Devinda Senanayake</title>
-      </Head>
+      <Title />
       <VStack align="start">
         <Heading fontSize={["2xl", "4xl"]} fontWeight="400" pl="2">
           Hey,
@@ -102,6 +100,7 @@ import { readFileSync, writeFileSync } from "fs";
 import { Client } from "@notionhq/client/build/src";
 import { PageConfig, ProjectCardProps } from "../types";
 import Head from "next/head";
+import { Title } from "../components/Title";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
