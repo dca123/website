@@ -28,8 +28,7 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks, imageUrl, blurImage }) => {
               objectFit="cover"
               layout="responsive"
               sizes="50vw"
-              src={imageUrl}
-              blurDataURL={blurImage}
+              src={img}
               placeholder="blur"
             />
           </Box>
@@ -46,8 +45,7 @@ import { Client } from "@notionhq/client";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { readFileSync, writeFileSync } from "fs";
 import { responseToBlocks } from "../lib/notion";
-import { getBase64PlaceHolder } from "../lib/placeholder";
-
+import img from "../public/images/me.jpg";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -69,14 +67,9 @@ export const getStaticProps: GetStaticProps = async () => {
     pageContentResponse = JSON.parse(pageContentJsonString);
   }
 
-  const img = "/images/me.jpg";
-  const base64 = await getBase64PlaceHolder(img, 48);
-
   return {
     props: {
       blocks: await responseToBlocks(pageContentResponse),
-      imageUrl: img,
-      blurImage: base64,
     },
     revalidate: 60,
   };
