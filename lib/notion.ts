@@ -53,7 +53,7 @@ export const getProjects = async (response: ProjectPropertiesResponse) => {
       ?.map(async (result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
-        const projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
+        const projectImageBlur = await getBase64PlaceHolder(projectImage);
         return {
           ...project,
           projectImage,
@@ -124,10 +124,7 @@ export const extractContentFromResponse = async (
     case "image":
       return {
         url: block.image?.external.url,
-        blurUrl: await getBase64PlaceHolder(
-          block.image?.external.url ?? "",
-          48
-        ),
+        blurUrl: await getBase64PlaceHolder(block.image?.external.url ?? ""),
         caption: block.image?.caption?.[0]?.plain_text,
       } as ExternalImage;
     default:
