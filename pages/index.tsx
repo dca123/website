@@ -37,7 +37,6 @@ const Home: NextPage<Props> = ({
         skills={project.skills}
         description={project.description}
         slug={project.slug}
-        projectImageBlur={project.projectImageBlur}
         imageBlur={project.imageBlur}
       />
     );

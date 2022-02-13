@@ -21,7 +21,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
   projectImage,
   skills,
   blocks,
-  projectImageBlur,
+  imageBlur,
 }) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
@@ -63,7 +63,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
             height={80}
             priority={true}
             placeholder="blur"
-            blurDataURL={projectImageBlur}
+            blurDataURL={imageBlur}
           />
         </Box>
         <Flex pt={2} flexWrap="wrap">
