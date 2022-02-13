@@ -22,7 +22,7 @@ import {
   ProjectProperties,
   RichText,
 } from "../types";
-import { PageConfigResponse, RichTextEntity } from "../types/pageConfig";
+import { PageConfigResponse } from "../types/pageConfig";
 import { getBase64PlaceHolder } from "./placeholder";
 import { Client } from "@notionhq/client";
 
@@ -55,15 +55,13 @@ export const getProjects = async (response: ProjectPropertiesResponse) => {
       ?.map(async (result: ProjectPropertiesResultsEntity) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
-        let projectImageBlur = project.imageBlur;
         if (project.imageBlur === "" && process.env.NODE_ENV === "production") {
-          projectImageBlur = await getBase64PlaceHolder(projectImage, 64);
-          updateImageBlur(result, projectImageBlur);
+          project.imageBlur = await getBase64PlaceHolder(projectImage, 64);
+          updateImageBlur(result, project.imageBlur);
         }
         return {
           ...project,
           projectImage,
-          projectImageBlur,
         } as ProjectCardProps;
       })
       .slice(0, 6) ?? [];
