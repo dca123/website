@@ -56,7 +56,7 @@ export const getProjects = async (response: ProjectPropertiesResponse) => {
         const project = extractProjectProperties(result.properties);
         const projectImage = extractProjectCoverImage(result.cover);
         if (project.imageBlur === "") {
-          project.imageBlur = await getBase64PlaceHolder(projectImage, 16);
+          project.imageBlur = await getBase64PlaceHolder(projectImage, 32);
           if (process.env.NODE_ENV === "production") {
             updateImageBlur(result, project.imageBlur);
           }

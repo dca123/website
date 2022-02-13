@@ -169,7 +169,7 @@ export const getStaticProps: GetStaticProps<
     pagePropertiesResponse.properties
   );
   const projectImage = extractProjectCoverImage(pagePropertiesResponse.cover);
-  const projectImageBlur = await getBase64PlaceHolder(projectImage, 16);
+  const projectImageBlur = await getBase64PlaceHolder(projectImage, 32);
   return {
     props: {
       ...pageProperties,
