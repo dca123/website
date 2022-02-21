@@ -21,15 +21,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Container maxW={["container.sm", "container.lg"]} h="95vh">
       <HStack justify="flex-end" pt="8">
-        <Heading fontWeight={activeWeight("/")} fontSize="md" px="4">
-          <Link href="/" passHref>
-            <ChakraLink>Home</ChakraLink>
-          </Link>
-        </Heading>
+        <Link href="/" passHref>
+          <ChakraLink>
+            <Heading fontWeight={activeWeight("/")} fontSize="md" px="4">
+              Home
+            </Heading>
+          </ChakraLink>
+        </Link>
         <Link href="/about" passHref>
-          <Heading fontWeight={activeWeight("/about")} fontSize="md" px="4">
-            <ChakraLink>About</ChakraLink>
-          </Heading>
+          <ChakraLink>
+            <Heading fontWeight={activeWeight("/about")} fontSize="md" px="4">
+              About
+            </Heading>
+          </ChakraLink>
         </Link>
         <Button onClick={toggleColorMode} variant="ghost">
           {colorMode === "light" ? (
