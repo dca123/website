@@ -9,6 +9,7 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import { HTMLMotionProps, motion } from "framer-motion";
+import { GetStaticProps } from "next";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 
@@ -88,3 +89,12 @@ const Projects = () => {
 };
 
 export default Projects;
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    redirect: {
+      destination: "/",
+      permanent: true,
+    },
+  };
+};
