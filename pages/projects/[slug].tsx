@@ -86,10 +86,13 @@ import {
 } from "../../lib/notion";
 import { ProjectPageProps } from "../../types";
 import { ParsedUrlQuery } from "querystring";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { readFileSync, writeFileSync } from "fs";
 import { getBase64PlaceHolder } from "../../lib/placeholder";
 import { Title } from "../../components/Title";
+import {
+  ProjectPropertiesResponse,
+  ProjectPropertiesResultsEntity,
+} from "../../types/projectReponse";
+import { ProjectContentResponse } from "../../types/pageResponse";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -125,76 +128,43 @@ export const getStaticProps: GetStaticProps<
   }
   const { slug } = context.params;
 
-  let pageContentResponse;
-  let pagePropertiesResponse;
-
-  if (process.env.NODE_ENV === "production") {
     const projectId = await getProjectIdFromSlug(slug);
-    pagePropertiesResponse = await notion.pages.retrieve({
+  const pagePropertiesResponse = await notion.pages.retrieve({
       page_id: projectId,
     });
 
-    pageContentResponse = await notion.blocks.children.list({
+  const pageContentResponse = await notion.blocks.children.list({
       block_id: projectId,
     });
-    // writeFileSync(
-    //   `./test_data/pagesProperty/${slug}.json`,
-    //   JSON.stringify(pagePropertiesResponse)
-    // );
-    // writeFileSync(
-    //   `./test_data/pages/${slug}.json`,
-    //   JSON.stringify(pageContentResponse)
-    // );
-  } else {
-    const pageContentJsonString = readFileSync(
-      `./test_data/pages/${slug}.json`,
-      {
-        encoding: "utf8",
-      }
-    );
-    const pagePropertiesJsonString = readFileSync(
-      `./test_data/pagesProperty/${slug}.json`,
-      {
-        encoding: "utf8",
-      }
-    );
-
-    pageContentResponse = JSON.parse(pageContentJsonString);
-    pagePropertiesResponse = JSON.parse(pagePropertiesJsonString);
-  }
 
   const pageProperties = extractProjectProperties(
-    pagePropertiesResponse.properties
+    (pagePropertiesResponse as ProjectPropertiesResultsEntity).properties
   );
-  const projectImage = extractProjectCoverImage(pagePropertiesResponse.cover);
+  const projectImage = extractProjectCoverImage(
+    (pagePropertiesResponse as ProjectPropertiesResultsEntity).cover
+  );
   const projectImageBlur = await getBase64PlaceHolder(projectImage, 32);
   return {
     props: {
       ...pageProperties,
       projectImage,
       projectImageBlur,
-      blocks: await responseToBlocks(pageContentResponse),
+      blocks: await responseToBlocks(
+        pageContentResponse as ProjectContentResponse
+      ),
     },
     revalidate: 60,
   };
 };
 
 export const getStaticPaths: GetStaticPaths<ProjectPageUrlProps> = async () => {
-  let response;
-  if (process.env.NODE_ENV === "production") {
     const database_id = "4f1fd603748b44d58615d782979d7a1e";
-    response = await notion.databases.query({
+  const response = await notion.databases.query({
       database_id,
     });
     // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
-  } else {
-    const jsonString = readFileSync("./test_data/database.json", {
-      encoding: "utf8",
-    });
-    response = JSON.parse(jsonString);
-  }
 
-  const paths = await getProjectSlugs(response);
+  const paths = await getProjectSlugs(response as ProjectPropertiesResponse);
 
   return {
     paths,

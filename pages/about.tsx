@@ -43,35 +43,23 @@ const AboutMe: NextPage<AboutPageProps> = ({ blocks }) => {
 export default AboutMe;
 
 import { Client } from "@notionhq/client";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { readFileSync, writeFileSync } from "fs";
 import { responseToBlocks } from "../lib/notion";
 import img from "../public/images/me.jpg";
 import { Title } from "../components/Title";
+import { ProjectContentResponse } from "../types/pageResponse";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export const getStaticProps: GetStaticProps = async () => {
-  let pageContentResponse;
-
-  if (process.env.NODE_ENV === "production") {
-    const aboutMePageId = "0edd4fa3cada44b3a8157195562489d7";
-    pageContentResponse = await notion.blocks.children.list({
-      block_id: aboutMePageId,
-    });
-    // writeFileSync(
-    //   `./test_data/about_me.json`,
-    //   JSON.stringify(pageContentResponse)
-    // );
-  } else {
-    const pageContentJsonString = readFileSync(`./test_data/about_me.json`, {
-      encoding: "utf8",
-    });
-    pageContentResponse = JSON.parse(pageContentJsonString);
-  }
+  const aboutMePageId = "0edd4fa3cada44b3a8157195562489d7";
+  const pageContentResponse = await notion.blocks.children.list({
+    block_id: aboutMePageId,
+  });
 
   return {
     props: {
-      blocks: await responseToBlocks(pageContentResponse),
+      blocks: await responseToBlocks(
+        pageContentResponse as ProjectContentResponse
+      ),
     },
     revalidate: 60,
   };
