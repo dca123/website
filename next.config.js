@@ -10,6 +10,7 @@ module.exports = withPlaiceholder({
       "source.unsplash.com",
       "s3.us-west-2.amazonaws.com",
       "res.cloudinary.com",
+      "preview.redd.it",
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
   },

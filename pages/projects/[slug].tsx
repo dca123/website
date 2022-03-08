@@ -24,7 +24,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
 }) => {
   const blocksContent = renderBlocks(blocks);
   const skillStack = renderSkillTags(skills);
-
+  const githubUrlLink = "http://" + githubUrl;
   return (
     <Layout>
       <Title title={title} />
@@ -43,8 +43,8 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
               {date}
             </Heading>
             <Heading fontWeight="400" fontSize="sm">
-              <Link href={githubUrl} isExternal={true}>
-                {githubUrl}
+              <Link href={githubUrlLink} isExternal={true}>
+                github
               </Link>
             </Heading>
           </VStack>
@@ -93,7 +93,7 @@ import {
   ProjectPropertiesResultsEntity,
 } from "../../types/projectReponse";
 import { ProjectContentResponse } from "../../types/pageResponse";
-
+import { cache } from "../../lib/cache";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {
@@ -119,6 +119,43 @@ interface ProjectPageUrlProps extends ParsedUrlQuery {
   slug: string;
 }
 
+type ProjectResponses = {
+  pagePropertiesResponse: ProjectPropertiesResultsEntity;
+  pageContentResponse: ProjectContentResponse;
+};
+
+const projectResponses = async (slug: string): Promise<ProjectResponses> => {
+  if (process.env.APP_ENV === "development") {
+    const responseCache = cache.get<ProjectResponses>(slug);
+    console.log(cache.keys());
+    if (responseCache !== undefined) {
+      console.log("Using cached response");
+      return responseCache;
+    }
+    console.log("No Cached response");
+  }
+
+  const projectId = await getProjectIdFromSlug(slug);
+  const pagePropertiesResponse = await notion.pages.retrieve({
+    page_id: projectId,
+  });
+
+  const pageContentResponse = await notion.blocks.children.list({
+    block_id: projectId,
+  });
+
+  if (process.env.APP_ENV === "development") {
+    console.log("Caching response");
+    cache.set(slug, { pagePropertiesResponse, pageContentResponse });
+  }
+
+  return {
+    pagePropertiesResponse:
+      pagePropertiesResponse as ProjectPropertiesResultsEntity,
+    pageContentResponse: pageContentResponse as ProjectContentResponse,
+  };
+};
+
 export const getStaticProps: GetStaticProps<
   ProjectPageProps,
   ProjectPageUrlProps
@@ -127,16 +164,8 @@ export const getStaticProps: GetStaticProps<
     throw new Error("No params available");
   }
   const { slug } = context.params;
-
-    const projectId = await getProjectIdFromSlug(slug);
-  const pagePropertiesResponse = await notion.pages.retrieve({
-      page_id: projectId,
-    });
-
-  const pageContentResponse = await notion.blocks.children.list({
-      block_id: projectId,
-    });
-
+  const { pagePropertiesResponse, pageContentResponse } =
+    await projectResponses(slug);
   const pageProperties = extractProjectProperties(
     (pagePropertiesResponse as ProjectPropertiesResultsEntity).properties
   );
@@ -158,11 +187,11 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths<ProjectPageUrlProps> = async () => {
-    const database_id = "4f1fd603748b44d58615d782979d7a1e";
+  const database_id = "4f1fd603748b44d58615d782979d7a1e";
   const response = await notion.databases.query({
-      database_id,
-    });
-    // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
+    database_id,
+  });
+  // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
 
   const paths = await getProjectSlugs(response as ProjectPropertiesResponse);
 
