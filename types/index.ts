@@ -36,6 +36,7 @@ export interface RichText {
   bold: boolean;
   italic: boolean;
   underline: boolean;
+  code: boolean;
   text: string;
 }
 

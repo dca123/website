@@ -11,14 +11,16 @@ import {
 import Image from "next/image";
 import { BlockInterface, ExternalImage, RichText } from "../types";
 
-const renderText = (richText: RichText, index: number) => {
-  const { bold, italic, underline, text } = richText;
-  let textNode: JSX.Element = <span>{text}</span>;
+  const { code, bold, italic, underline, text } = content;
+  let textNode: JSX.Element = <>{text}</>;
   if (italic) {
-    textNode = <Text as="em">{text}</Text>;
+    textNode = <Text as="em">{textNode}</Text>;
   }
   if (underline) {
     textNode = <Text as="u">{textNode}</Text>;
+  }
+  if (code) {
+    textNode = <Code colorScheme="orange">{textNode}</Code>;
   }
   return (
     <Text
