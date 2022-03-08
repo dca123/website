@@ -108,11 +108,18 @@ const extractTextFromBlock = (
             bold: block?.annotations.bold ?? false,
             underline: block?.annotations.underline ?? false,
             italic: block?.annotations.italic ?? false,
+            code: block?.annotations.code ?? false,
           } as RichText)
       ) ?? []
     );
   }
-  return block[blockType]?.text?.[0]?.plain_text ?? "";
+  return {
+    text: block[blockType]?.text?.[0]?.plain_text ?? "",
+    bold: block[blockType]?.text?.[0]?.annotations.bold ?? false,
+    underline: block[blockType]?.text?.[0]?.annotations.underline ?? false,
+    italic: block[blockType]?.text?.[0]?.annotations.italic ?? false,
+    code: block[blockType]?.text?.[0]?.annotations.code ?? false,
+  } as RichText;
 };
 
 export const extractContentFromResponse = async (
@@ -136,13 +143,13 @@ export const extractContentFromResponse = async (
         caption: block.image?.caption?.[0]?.plain_text,
       } as ExternalImage;
     default:
-      return "text not found";
+      throw new Error(`Block type ${blockType} not supported`);
   }
 };
 
 export const groupListBlocks = (blocks: BlockInterface[]): BlockInterface[] => {
   const ans: BlockInterface[] = [];
-  let tempList: string[] = [];
+  let tempList: RichText[] = [];
   let tempType: AcceptedTypes | undefined;
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i];
@@ -150,7 +157,7 @@ export const groupListBlocks = (blocks: BlockInterface[]): BlockInterface[] => {
       case "numbered_list_item":
       case "bulleted_list_item":
         tempType = block.type;
-        tempList.push((block as BlockInterface<string>).data);
+        tempList.push((block as BlockInterface<RichText>).data);
         break;
       default:
         if (tempList.length > 0 && tempType) {

@@ -6,11 +6,13 @@ import {
   Text,
   VStack,
   UnorderedList,
+  Code,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
 import { BlockInterface, ExternalImage, RichText } from "../types";
 
+const RenderText = ({ content }: { content: RichText }) => {
   const { code, bold, italic, underline, text } = content;
   let textNode: JSX.Element = <>{text}</>;
   if (italic) {
@@ -25,7 +27,6 @@ import { BlockInterface, ExternalImage, RichText } from "../types";
   return (
     <Text
       as="span"
-      key={index}
       fontSize="lg"
       fontWeight={bold ? "700" : "400"}
       lineHeight="tall"
@@ -41,15 +42,11 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
       case "paragraph":
         if (Array.isArray(block.data)) {
           const textArray = block.data.map((text, textIndex) => {
-            return renderText(text as RichText, textIndex);
+            return <RenderText content={text as RichText} key={textIndex} />;
           });
           return <Box key={index}>{textArray}</Box>;
         }
-        return (
-          <Text key={index} fontSize="lg" fontWeight="400" lineHeight="tall">
-            {block.data}
-          </Text>
-        );
+        return <RenderText content={block.data as RichText} />;
       case "heading_1":
         return (
           <Heading
@@ -58,7 +55,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
             fontWeight="600"
             pt={index !== 0 ? "4" : "0"}
           >
-            {block.data}
+            {(block.data as RichText).text}
           </Heading>
         );
       case "heading_2":
@@ -70,17 +67,15 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
             fontWeight="500"
             pt={"2"}
           >
-            {block.data}
+            {(block.data as RichText).text}
           </Heading>
         );
       case "numbered_list_item":
         return (
           <OrderedList pl={10} key={index}>
-            {(block.data as string[]).map((item: string, index: number) => (
+            {(block.data as RichText[]).map((item: RichText, index: number) => (
               <ListItem key={index} py={0.5}>
-                <Text fontSize="lg" fontWeight="400">
-                  {item}
-                </Text>
+                <RenderText content={item} />
               </ListItem>
             ))}
           </OrderedList>
@@ -88,11 +83,9 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
       case "bulleted_list_item":
         return (
           <UnorderedList pl={10} key={index}>
-            {(block.data as string[]).map((item: string, index: number) => (
+            {(block.data as RichText[]).map((item: RichText, index: number) => (
               <ListItem key={index} py={0.5}>
-                <Text fontSize="lg" fontWeight="400">
-                  {item}
-                </Text>
+                <RenderText content={item} />
               </ListItem>
             ))}
           </UnorderedList>

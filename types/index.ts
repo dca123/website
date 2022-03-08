@@ -28,9 +28,8 @@ export interface ExternalImage {
   caption: string;
 }
 
-type Lists = string[];
-
-export type BlockData = string | Lists | ExternalImage | RichText | RichText[];
+type Lists = RichText[];
+export type BlockData = Lists | ExternalImage | RichText;
 
 export interface RichText {
   bold: boolean;
