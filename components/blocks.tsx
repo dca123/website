@@ -36,17 +36,29 @@ const RenderText = ({ content }: { content: RichText }) => {
   );
 };
 
+const RenderTextArray = ({
+  richTextArray,
+}: {
+  richTextArray: RichText | RichText[];
+}) => {
+  if (Array.isArray(richTextArray)) {
+    const textArray = richTextArray.map((text, textIndex) => (
+      <RenderText content={text as RichText} key={textIndex} />
+    ));
+    return <Box>{textArray}</Box>;
+  }
+  return <RenderText content={richTextArray} />;
+};
+
 export const renderBlocks = (blocks: BlockInterface[]) =>
   blocks.map((block: BlockInterface, index) => {
     switch (block.type) {
       case "paragraph":
-        if (Array.isArray(block.data)) {
-          const textArray = block.data.map((text, textIndex) => {
-            return <RenderText content={text as RichText} key={textIndex} />;
-          });
-          return <Box key={index}>{textArray}</Box>;
-        }
-        return <RenderText content={block.data as RichText} />;
+        return (
+          <RenderTextArray
+            richTextArray={block.data as RichText[] | RichText}
+          />
+        );
       case "heading_1":
         return (
           <Heading
@@ -75,7 +87,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
           <OrderedList pl={10} key={index}>
             {(block.data as RichText[]).map((item: RichText, index: number) => (
               <ListItem key={index} py={0.5}>
-                <RenderText content={item} />
+                <RenderTextArray richTextArray={item} />
               </ListItem>
             ))}
           </OrderedList>
@@ -85,7 +97,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
           <UnorderedList pl={10} key={index}>
             {(block.data as RichText[]).map((item: RichText, index: number) => (
               <ListItem key={index} py={0.5}>
-                <RenderText content={item} />
+                <RenderTextArray richTextArray={item} />
               </ListItem>
             ))}
           </UnorderedList>
