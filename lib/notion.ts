@@ -109,6 +109,7 @@ const extractTextFromBlock = (
             underline: block?.annotations.underline ?? false,
             italic: block?.annotations.italic ?? false,
             code: block?.annotations.code ?? false,
+            link: block?.href === undefined ? null : block?.href,
           } as RichText)
       ) ?? []
     );
@@ -119,6 +120,10 @@ const extractTextFromBlock = (
     underline: block[blockType]?.text?.[0]?.annotations.underline ?? false,
     italic: block[blockType]?.text?.[0]?.annotations.italic ?? false,
     code: block[blockType]?.text?.[0]?.annotations.code ?? false,
+    link:
+      block[blockType]?.text?.[0]?.href === undefined
+        ? null
+        : block[blockType]?.text?.[0]?.href,
   } as RichText;
 };
 

@@ -8,8 +8,9 @@ import {
   useColorModeValue,
   chakra,
   HTMLChakraProps,
+  LinkBox,
+  LinkOverlay,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import Image from "next/image";
 import { ProjectCardProps } from "../types";
 import { HTMLMotionProps, motion } from "framer-motion";
@@ -41,7 +42,7 @@ export default function ProjectCard({
     );
   });
   return (
-    <Link href={"/projects/" + slug} passHref>
+    <LinkBox>
       <MotionBox
         boxShadow="0px 0px #ED8936"
         // transition={{ ease: "easeInOut", duration: 0.125 }}
@@ -80,7 +81,7 @@ export default function ProjectCard({
             >
               <Box py={5}>
                 <Heading fontSize="2xl" variant="card">
-                  {title}
+                  <LinkOverlay href={"/projects/" + slug}>{title}</LinkOverlay>
                 </Heading>
                 <Text variant="card" pt={1}>
                   {description}
@@ -93,6 +94,6 @@ export default function ProjectCard({
           </Flex>
         </Box>
       </MotionBox>
-    </Link>
+    </LinkBox>
   );
 }

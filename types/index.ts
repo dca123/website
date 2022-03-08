@@ -37,6 +37,7 @@ export interface RichText {
   underline: boolean;
   code: boolean;
   text: string;
+  link: string | null;
 }
 
 export interface BlockInterface<T = BlockData> {

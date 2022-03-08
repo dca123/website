@@ -44,7 +44,7 @@ const ProjectPage: NextPage<ProjectPageProps> = ({
             </Heading>
             <Heading fontWeight="400" fontSize="sm">
               <Link href={githubUrlLink} isExternal={true}>
-                github
+                github <ExternalLinkIcon mx="2px" />
               </Link>
             </Heading>
           </VStack>
@@ -94,6 +94,8 @@ import {
 } from "../../types/projectReponse";
 import { ProjectContentResponse } from "../../types/pageResponse";
 import { cache } from "../../lib/cache";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+// import { writeFileSync } from "fs";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const getProjectIdFromSlug = async (slug: string) => {
@@ -146,7 +148,12 @@ const projectResponses = async (slug: string): Promise<ProjectResponses> => {
 
   if (process.env.APP_ENV === "development") {
     console.log("Caching response");
-    cache.set(slug, { pagePropertiesResponse, pageContentResponse });
+    cache.set<ProjectResponses>(slug, {
+      pagePropertiesResponse:
+        (await pagePropertiesResponse) as ProjectPropertiesResultsEntity,
+      pageContentResponse:
+        (await pageContentResponse) as ProjectContentResponse,
+    });
   }
 
   return {
@@ -166,6 +173,12 @@ export const getStaticProps: GetStaticProps<
   const { slug } = context.params;
   const { pagePropertiesResponse, pageContentResponse } =
     await projectResponses(slug);
+
+  // writeFileSync(
+  //   `test_data/${slug}.json`,
+  //   JSON.stringify(pageContentResponse),
+  //   "utf8"
+  // );
   const pageProperties = extractProjectProperties(
     (pagePropertiesResponse as ProjectPropertiesResultsEntity).properties
   );
@@ -173,6 +186,7 @@ export const getStaticProps: GetStaticProps<
     (pagePropertiesResponse as ProjectPropertiesResultsEntity).cover
   );
   const projectImageBlur = await getBase64PlaceHolder(projectImage, 32);
+
   return {
     props: {
       ...pageProperties,
@@ -191,7 +205,6 @@ export const getStaticPaths: GetStaticPaths<ProjectPageUrlProps> = async () => {
   const response = await notion.databases.query({
     database_id,
   });
-  // writeFileSync("test_data/database.json", JSON.stringify(response), "utf8");
 
   const paths = await getProjectSlugs(response as ProjectPropertiesResponse);
 

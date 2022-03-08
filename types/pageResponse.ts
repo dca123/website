@@ -57,7 +57,7 @@ export interface TextEntityOrCaptionEntity1 {
   text: Text;
   annotations: Annotations;
   plain_text: string;
-  href?: null;
+  href?: null | string;
 }
 export interface Heading1OrParagraphOrHeading2OrNumberedListItem1 {
   text?: TextEntityOrCaptionEntity[] | null;

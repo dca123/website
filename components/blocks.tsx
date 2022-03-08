@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Heading,
   OrderedList,
@@ -7,13 +8,14 @@ import {
   VStack,
   UnorderedList,
   Code,
+  Link,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
 import { BlockInterface, ExternalImage, RichText } from "../types";
 
 const RenderText = ({ content }: { content: RichText }) => {
-  const { code, bold, italic, underline, text } = content;
+  const { code, bold, italic, underline, text, link } = content;
   let textNode: JSX.Element = <>{text}</>;
   if (italic) {
     textNode = <Text as="em">{textNode}</Text>;
@@ -23,6 +25,14 @@ const RenderText = ({ content }: { content: RichText }) => {
   }
   if (code) {
     textNode = <Code colorScheme="orange">{textNode}</Code>;
+  }
+  if (link !== null) {
+    textNode = (
+      <Link href={link}>
+        <Text as="u">{textNode}</Text>
+        <ExternalLinkIcon mx="4px" mb="4px" />
+      </Link>
+    );
   }
   return (
     <Text
@@ -56,6 +66,7 @@ export const renderBlocks = (blocks: BlockInterface[]) =>
       case "paragraph":
         return (
           <RenderTextArray
+            key={index}
             richTextArray={block.data as RichText[] | RichText}
           />
         );
