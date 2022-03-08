@@ -42,58 +42,56 @@ export default function ProjectCard({
     );
   });
   return (
-    <LinkBox>
-      <MotionBox
-        boxShadow="0px 0px #ED8936"
-        // transition={{ ease: "easeInOut", duration: 0.125 }}
-        whileHover={{
-          scale: 1.01,
-          cursor: "pointer",
-          boxShadow: shadow,
-          // transition: { bounce: 1 },
-        }}
-        whileTap={{ scale: 0.99 }}
-        borderRadius="md"
-      >
-        <Box borderRadius="lg" overflow="hidden" h="full" as="a">
-          <Flex direction="column" h="full">
-            <Box>
-              <Image
-                src={imageUrl}
-                alt="image"
-                objectFit="cover"
-                layout="responsive"
-                sizes="50vw, 20vw"
-                width={120}
-                height={75}
-                blurDataURL={imageBlur}
-                placeholder="blur"
-              />
+    <MotionBox
+      boxShadow="0px 0px #ED8936"
+      // transition={{ ease: "easeInOut", duration: 0.125 }}
+      whileHover={{
+        scale: 1.01,
+        cursor: "pointer",
+        boxShadow: shadow,
+        // transition: { bounce: 1 },
+      }}
+      whileTap={{ scale: 0.99 }}
+      borderRadius="md"
+    >
+      <LinkBox borderRadius="lg" overflow="hidden" h="full">
+        <Flex direction="column" h="full">
+          <Box>
+            <Image
+              src={imageUrl}
+              alt="image"
+              objectFit="cover"
+              layout="responsive"
+              sizes="50vw, 20vw"
+              width={120}
+              height={75}
+              blurDataURL={imageBlur}
+              placeholder="blur"
+            />
+          </Box>
+          <Flex
+            alignItems="flex-start"
+            justify="space-between"
+            direction="column"
+            px={7}
+            bg={bg}
+            // bgGradient={bg}
+            h="full"
+          >
+            <Box py={5}>
+              <Heading fontSize="2xl" variant="card">
+                <LinkOverlay href={"/projects/" + slug}>{title}</LinkOverlay>
+              </Heading>
+              <Text variant="card" pt={1}>
+                {description}
+              </Text>
             </Box>
-            <Flex
-              alignItems="flex-start"
-              justify="space-between"
-              direction="column"
-              px={7}
-              bg={bg}
-              // bgGradient={bg}
-              h="full"
-            >
-              <Box py={5}>
-                <Heading fontSize="2xl" variant="card">
-                  <LinkOverlay href={"/projects/" + slug}>{title}</LinkOverlay>
-                </Heading>
-                <Text variant="card" pt={1}>
-                  {description}
-                </Text>
-              </Box>
-              <Box pb={8}>
-                <HStack>{skillStack}</HStack>
-              </Box>
-            </Flex>
+            <Box pb={8}>
+              <HStack>{skillStack}</HStack>
+            </Box>
           </Flex>
-        </Box>
-      </MotionBox>
-    </LinkBox>
+        </Flex>
+      </LinkBox>
+    </MotionBox>
   );
 }
