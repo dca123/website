@@ -136,11 +136,11 @@ const projectResponses = async (slug: string): Promise<ProjectResponses> => {
   }
 
   const projectId = await getProjectIdFromSlug(slug);
-  const pagePropertiesResponse = await notion.pages.retrieve({
+  const pagePropertiesResponse = notion.pages.retrieve({
     page_id: projectId,
   });
 
-  const pageContentResponse = await notion.blocks.children.list({
+  const pageContentResponse = notion.blocks.children.list({
     block_id: projectId,
   });
 
@@ -151,8 +151,8 @@ const projectResponses = async (slug: string): Promise<ProjectResponses> => {
 
   return {
     pagePropertiesResponse:
-      pagePropertiesResponse as ProjectPropertiesResultsEntity,
-    pageContentResponse: pageContentResponse as ProjectContentResponse,
+      (await pagePropertiesResponse) as ProjectPropertiesResultsEntity,
+    pageContentResponse: (await pageContentResponse) as ProjectContentResponse,
   };
 };
 

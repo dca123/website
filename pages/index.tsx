@@ -105,17 +105,19 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export const getStaticProps: GetStaticProps = async () => {
   const database_id = "4f1fd603748b44d58615d782979d7a1e";
-  const projectsListResponse = await notion.databases.query({
+  const projectsListResponse = notion.databases.query({
     database_id,
   });
-  const pageConfigResponse = await notion.databases.query({
+  const pageConfigResponse = notion.databases.query({
     database_id: "c1e06496449b4ebf99adeeb2d0d3ff5f",
   });
 
   const projects: ProjectCardProps[] = await getProjects(
-    projectsListResponse as ProjectPropertiesResponse
+    (await projectsListResponse) as ProjectPropertiesResponse
   );
-  const pageConfig = getPageConfig(pageConfigResponse as PageConfigResponse);
+  const pageConfig = getPageConfig(
+    (await pageConfigResponse) as PageConfigResponse
+  );
   const props: Props = {
     ...pageConfig,
     recentProjects: projects,
