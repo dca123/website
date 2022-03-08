@@ -35,6 +35,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Heading>
           </ChakraLink>
         </Link>
+        <ChakraLink href="https://feed.devinda.me" isExternal={true}>
+          <Heading fontWeight="500" fontSize="md" px="4">
+            Feed
+          </Heading>
+        </ChakraLink>
         <Button onClick={toggleColorMode} variant="ghost">
           {colorMode === "light" ? (
             <SunIcon fontSize="xl" />
