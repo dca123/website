@@ -41,20 +41,20 @@ export default function ProjectCard({
     );
   });
   return (
-    <MotionBox
-      boxShadow="0px 0px #ED8936"
-      // transition={{ ease: "easeInOut", duration: 0.125 }}
-      whileHover={{
-        scale: 1.01,
-        cursor: "pointer",
-        boxShadow: shadow,
-        // transition: { bounce: 1 },
-      }}
-      whileTap={{ scale: 0.99 }}
-      borderRadius="md"
-    >
-      <Box borderRadius="lg" overflow="hidden" h="full">
-        <Link href={"/projects/" + slug} passHref>
+    <Link href={"/projects/" + slug} passHref>
+      <MotionBox
+        boxShadow="0px 0px #ED8936"
+        // transition={{ ease: "easeInOut", duration: 0.125 }}
+        whileHover={{
+          scale: 1.01,
+          cursor: "pointer",
+          boxShadow: shadow,
+          // transition: { bounce: 1 },
+        }}
+        whileTap={{ scale: 0.99 }}
+        borderRadius="md"
+      >
+        <Box borderRadius="lg" overflow="hidden" h="full" as="a">
           <Flex direction="column" h="full">
             <Box>
               <Image
@@ -91,8 +91,8 @@ export default function ProjectCard({
               </Box>
             </Flex>
           </Flex>
-        </Link>
-      </Box>
-    </MotionBox>
+        </Box>
+      </MotionBox>
+    </Link>
   );
 }
